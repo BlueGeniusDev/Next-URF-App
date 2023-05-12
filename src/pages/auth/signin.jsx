@@ -83,7 +83,7 @@ const SignIn = () => {
   };
 
   return (
-    <main className="grid grid-cols-12 gap-5 mobile:m-4 m-10 md:h-[460px] lg:h-[620px] xl:h-[750px]">
+    <main className="grid grid-cols-12 gap-5 mobile:m-4 m-10 md:h-[460px] lg:h-[620px] xl:h-[720px]">
       <div className="h-[450px] md:col-span-5 middle: col-span-12 mobile:col-span-12 mobile:p-2 p-4 md:mt-6 lg:mt-20 xl:mt-40 xxl:mt-40 md:mx-2 xl:mx-16 xxl:mx-20 bg-white rounded-md border-gray border-1 border border-solid drop-shadow-md">
         <h1 className="text-3xl text-lightBlack mb-6 font-bold">
           {language.welcomeBack}
@@ -214,7 +214,7 @@ const SignIn = () => {
         </div>
       </div>
       <div
-        className="md:h-[480px] lg:h-[640px] xl:h-[800px] hidden md:block md:col-span-7 bg-svg bg-no-repeat rounded-md bg-left bg-cover max-h-auto"
+        className="md:h-[480px] lg:h-[640px] xl:h-[760px] hidden md:block md:col-span-7 bg-svg bg-no-repeat rounded-md bg-left bg-cover max-h-auto"
         style={{
           backgroundImage: `url('/images/login/${loginRole}.svg')`,
           imageRendering: "pixelated",
