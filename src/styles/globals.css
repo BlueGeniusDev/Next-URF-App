@@ -1,0 +1,17 @@
+/* Outfit font style */
+@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
+
+/* tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: #a4a4a4;
+}
+
+body {
+  font-family: "outfit";
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--foreground-rgb));
+}
