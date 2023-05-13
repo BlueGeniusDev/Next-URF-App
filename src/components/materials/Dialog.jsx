@@ -10,8 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CustomSelect from "./CustomSelect";
 import { CustomTextField } from "./CustomTextField";
 import MailBox from "./MailBox";
-import { Alert } from "@material-tailwind/react";
-import { XCircleIcon } from "@heroicons/react/24/outline";
+import AlertMessage from "./AlertMessage";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& div.MuiPaper-root": {
@@ -55,6 +54,7 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
+
 export default function NewUserDialog(props) {
   const [error, setError] = React.useState({});
   return (
@@ -133,14 +133,7 @@ export default function NewUserDialog(props) {
           </button>
         </div>
         {Object.keys(error).length !== 0 ? (
-          <Alert
-            color="orange"
-            className=""
-            variant="gradient" //"ghost"
-            icon={<XCircleIcon strokeWidth={2} className="h-6 w-6" />}
-          >
-            <span>{error.msg}</span>
-          </Alert>
+          <AlertMessage status="error" msg={error.msg}></AlertMessage>
         ) : (
           ""
         )}

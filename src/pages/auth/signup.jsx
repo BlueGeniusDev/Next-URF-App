@@ -7,6 +7,8 @@
 // third-party libraries
 import { useState } from "react";
 import Link from "next/link";
+
+// import components
 import {
   FaRegEnvelope,
   FaMapMarkerAlt,
@@ -14,9 +16,13 @@ import {
   FaRegEyeSlash,
 } from "react-icons/fa";
 import { BsPhone } from "react-icons/bs";
+import AlertMessage from "@/components/materials/AlertMessage";
 
 // using context
 import { useMainContext } from "@/context";
+
+// import sign-in api
+import { auth } from "../api/auth";
 
 const SignUp = () => {
   // get global states
@@ -36,7 +42,7 @@ const SignUp = () => {
     postalCode: "",
     password: "",
     cpassword: "",
-    role: loginRole
+    role: loginRole,
   });
   const [validAlerts, setValidAlerts] = useState({
     email: "",
@@ -45,6 +51,9 @@ const SignUp = () => {
     cpassword: "",
     blank: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertStatus, setAlertStatus] = useState("");
 
   // change states
   const changeValue = (field, e) => {
@@ -60,7 +69,6 @@ const SignUp = () => {
       return "";
     }
   };
-
   const validatePassword = (val = values.password) => {
     if (val.length < 8) {
       return language.passValid1;
@@ -71,28 +79,25 @@ const SignUp = () => {
     }
     return "";
   };
-
   const validateCPassword = (val = values.cpassword) => {
     if (val !== values.password) {
       return language.notMatchPassword;
     }
     return "";
   };
-
   const validatePhone = (val = values.phone) => {
-    const regex = /^\(\d{3}\)\s\d{3}-\d{4}/g;
+    const regex = /^\(\d{3}\)\d{3}-\d{4}/g;
     if (!regex.test(val)) {
       return language.invalidPhone;
     }
     return "";
   };
-
   const viewValid = (field, val) => {
     setValidAlerts({ ...validAlerts, [field]: val });
   };
 
   // function to create new user
-  const create = () => {
+  const create = async () => {
     if (values.name === "") {
       viewValid("blank", "name");
       return;
@@ -146,8 +151,15 @@ const SignUp = () => {
       return;
     }
 
-    delete values.cpassword;
-    console.log(values);
+    setIsLoading(true);
+    const res = await auth("sign-up", values);
+    if (res.code === 200) {
+      setAlertStatus("success");
+    } else {
+      setAlertStatus("error");
+    }
+    setAlertMsg(res.message);
+    setIsLoading(false);
   };
 
   return (
@@ -314,7 +326,7 @@ const SignUp = () => {
                     ? "focus:border-primaryBlue active:border-primaryBlue"
                     : "border-errorRed focus:border-errorRed active:border-errorRed active:border-2"
                 }`}
-                placeholder="(123) 456-7890"
+                placeholder="(123)456-7890"
                 type="text"
                 name="Phone"
                 onChange={(e) => {
@@ -518,8 +530,11 @@ const SignUp = () => {
             <button
               className="bg-primaryBlue text-white rounded-md w-full h-12 hover:bg-[rgba(16,77,150,0.85)]"
               onClick={create}
+              disabled={isLoading}
             >
-              {language.createAccount}
+              {isLoading
+                ? `${language.createAccount} ...`
+                : language.createAccount}
             </button>
             <Link
               href="signin"
@@ -527,6 +542,13 @@ const SignUp = () => {
             >
               {language.cancel}
             </Link>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-1 mt-0 gap-8 mobile:grid-cols-1">
+          <div className="grid grid-cols-2 gap-8">
+            {alertMsg && (
+              <AlertMessage status={alertStatus} msg={alertMsg}></AlertMessage>
+            )}
           </div>
         </div>
       </div>

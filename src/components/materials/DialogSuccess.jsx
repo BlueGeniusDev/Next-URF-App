@@ -8,6 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { CustomTextField } from "./CustomTextField";
+import Image from "next/image";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& div.MuiPaper-root": {
@@ -66,9 +67,10 @@ export default function SuccessDialog(props) {
       ></BootstrapDialogTitle>
       <DialogContent sx={{ px: "91px!important" }}>
         <div className="flex justify-center">
-          <img
+          <Image
             className="mb-10 mt-4"
             src="/CheckCircle.svg"
+            alt="Logo"
             width={58.33}
             height={58.33}
           />
@@ -85,11 +87,7 @@ export default function SuccessDialog(props) {
         </h2>
         <p>An email will be sent to the user with this information to login</p>
         <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">Name</p>
-        <CustomTextField
-          fullWidth
-          variant="outlined"
-          value={props.data.name}
-        />
+        <CustomTextField fullWidth variant="outlined" value={props.data.name} />
         <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">Password</p>
         <CustomTextField
           fullWidth

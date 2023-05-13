@@ -1,13 +1,15 @@
 import * as React from "react";
 import { CustomTextField } from "./CustomTextField";
+import Image from "next/image";
 
 export default function SuccessDialogMo(props) {
   return (
     <div className={props.className}>
       <div className="flex justify-center">
-        <img
+        <Image
           className="mb-10 mt-16"
           src="/CheckCircle.svg"
+          alt="Logo"
           width={58.33}
           height={58.33}
         />

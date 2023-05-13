@@ -8,16 +8,24 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { FaRegEnvelope } from "react-icons/fa";
+
+// import components
+import { FaRegEye, FaRegEyeSlash, FaRegEnvelope } from "react-icons/fa";
+import AlertMessage from "@/components/materials/AlertMessage";
 
 // using context
 import { useMainContext } from "@/context";
 
+// import sign-in api
+import { auth } from "../api/auth";
+
+// import resource
+import { APP_URL } from "../../resource/config";
+
 const SignIn = () => {
   const navigator = useRouter();
 
-  // get global states
+  // global states
   const states = useMainContext();
   const language = states.language;
   const loginRole = states.loginRole;
@@ -33,6 +41,9 @@ const SignIn = () => {
     password: "",
     blank: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertStatus, setAlertStatus] = useState("");
 
   // change states
   const changeValue = (field, e) => {
@@ -51,7 +62,6 @@ const SignIn = () => {
       return "";
     }
   };
-
   const validatePassword = (val = values.password) => {
     if (val.length < 8) {
       return language.passValid1;
@@ -64,7 +74,7 @@ const SignIn = () => {
   };
 
   // function to login
-  const login = () => {
+  const login = async () => {
     if (values.email === "") {
       viewValid("email", language.required);
       return;
@@ -82,10 +92,15 @@ const SignIn = () => {
       return;
     }
 
-    console.log(values);
-    navigator.push(
-      "https://united-roofing-crew.vercel.app/admin/sales"
-    );
+    setIsLoading(true);
+    const res = await auth("sign-in", values);
+    if (res.code === 200) {
+      navigator.push(`${APP_URL}admin/sales`);
+    } else {
+      setAlertStatus("error");
+      setAlertMsg(res.message);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -208,8 +223,9 @@ const SignIn = () => {
           <button
             className="box px-6 py-3 text-base text-white bg-primaryBlue rounded-md"
             onClick={login}
+            disabled={isLoading}
           >
-            {language.login}
+            {isLoading ? `${language.login} ...` : language.login}
           </button>
           <Link
             href="/auth/signup"
@@ -218,6 +234,9 @@ const SignIn = () => {
             {language.create}
           </Link>
         </div>
+        {alertMsg && (
+          <AlertMessage status={alertStatus} msg={alertMsg}></AlertMessage>
+        )}
       </div>
       <div
         className="md:h-[480px] lg:h-[640px] xl:h-[760px] hidden md:block md:col-span-7 bg-svg bg-no-repeat rounded-md bg-left bg-cover max-h-auto"

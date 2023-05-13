@@ -2,16 +2,17 @@ import * as React from "react";
 import MailBox from "./MailBox";
 import CustomSelect from "./CustomSelect";
 import { CustomTextField } from "./CustomTextField";
-import { Alert } from "@material-tailwind/react";
-import { XCircleIcon } from "@heroicons/react/24/outline";
+import AlertMessage from "./AlertMessage";
+import Image from "next/image";
 
 export default function NewUserDialogMo(props) {
   const [error, setError] = React.useState({});
   return (
     <div className={props.className}>
       <div style={{ position: "relative", height: "108px" }}>
-        <img
+        <Image
           src="/left-arrow.svg"
+          alt="Logo"
           width={16}
           height={16}
           style={{ position: "absolute", left: "20px", top: "33px" }}
@@ -83,14 +84,7 @@ export default function NewUserDialogMo(props) {
           </button>
         </div>
         {Object.keys(error).length !== 0 ? (
-          <Alert
-            color="orange"
-            className=""
-            variant="gradient" //"ghost"
-            icon={<XCircleIcon strokeWidth={2} className="h-6 w-6" />}
-          >
-            <span>{error.msg}</span>
-          </Alert>
+          <AlertMessage status="error" msg={error.msg}></AlertMessage>
         ) : (
           ""
         )}
