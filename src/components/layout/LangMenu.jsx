@@ -25,9 +25,9 @@ const LangMenu = () => {
   };
   const hideDropdown = (e) => {
     if(e.target.value === undefined) {
-      sessionStorage.setItem("lang", sessionStorage.getItem("lang"));
+      localStorage.setItem("lang", localStorage.getItem("lang"));
     } else {
-      sessionStorage.setItem("lang", e.target.value);
+      localStorage.setItem("lang", e.target.value);
       states.setSelectedLang(e.target.value);
     }
     setIsOpen(false);

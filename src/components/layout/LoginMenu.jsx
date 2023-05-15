@@ -14,8 +14,7 @@ import { useMainContext } from "@/context";
 
 const LoginMenu = () => {
   // get global states
-  const states = useMainContext();
-  let language = states.language;
+  const {language, setRole} = useMainContext();
 
   // states
   const [isOpen, setIsOpen] = useState(false);
@@ -24,12 +23,12 @@ const LoginMenu = () => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const hideDropdown = (loginRole) => {
-    if (loginRole === null) {
-      sessionStorage.setItem("loginRole", sessionStorage.getItem("loginRole"));
+  const hideDropdown = (role) => {
+    if (role === null) {
+      localStorage.setItem("role", localStorage.getItem("role"));
     } else {
-      sessionStorage.setItem("loginRole", loginRole);
-      states.setLoginRole(loginRole);
+      localStorage.setItem("role", role);
+      setRole(role);
     }
     setIsOpen(false);
   };

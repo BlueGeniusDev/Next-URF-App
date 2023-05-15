@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import Popover from "@mui/material/Popover";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -47,7 +48,7 @@ export default function CustomMenu(props) {
                 handleClose();
               }}
             >
-              <img src="/trash.svg" width={14} height={18} className="inline" />{" "}
+              <Image alt="" src="/trash.svg" width={14} height={18} className="inline" />{" "}
               <span className="text-base font-norma ml-2 mt-1">Delete</span>
             </ListItemButton>
           </ListItem>
@@ -58,7 +59,7 @@ export default function CustomMenu(props) {
                 handleClose();
               }}
             >
-              <img src="/trash.svg" width={14} height={18} className="inline" />{" "}
+              <Image alt="" src="/trash.svg" width={14} height={18} className="inline" />{" "}
               <span className="text-base font-norma ml-2 mt-1">
                 Reset Password
               </span>

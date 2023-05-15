@@ -34,7 +34,8 @@ const langObj = {
     createAccount: "Create Account",
     cancel: "Cancel",
     resetYourPassword: "Reset your password",
-    resetPassDes: "Enter the email associated with your account and we will send you a link to reset your password.",
+    resetPassDes:
+      "Enter the email associated with your account and we will send you a link to reset your password.",
     continue: "Continue",
     setYourNewPassword: "Set your new password",
     enterYourNewPassword: "Enter your new password",
@@ -76,7 +77,8 @@ const langObj = {
     createAccount: "Crear cuenta",
     cancel: "Cancelar",
     resetYourPassword: "Restablecer su contraseña",
-    resetPassDes: "Ingrese el correo electrónico asociado con su cuenta y le enviaremos un enlace para restablecer su contraseña.",
+    resetPassDes:
+      "Ingrese el correo electrónico asociado con su cuenta y le enviaremos un enlace para restablecer su contraseña.",
     continue: "Continuar",
     setYourNewPassword: "Introduzca su nueva contraseña",
     enterYourNewPassword: "Introduzca su nueva contraseña",

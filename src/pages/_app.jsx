@@ -12,18 +12,18 @@ import "tailwindcss/tailwind.css";
 import "@/styles/globals.css";
 
 // context
-import { AppStore } from "@/context";
+import { MainContextProvider } from "@/context";
 
 // componets
 import Layout from "@/components/layout/Layout";
 
 const App = ({ Component, pageProps }) => {
   return (
-    <AppStore>
+    <MainContextProvider>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </AppStore>
+    </MainContextProvider>
   );
 };
 

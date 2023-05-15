@@ -13,8 +13,7 @@ import { useMainContext } from "@/context";
 
 const SetNewPassword = () => {
   // get global states
-  const states = useMainContext();
-  const language = states.language;
+  const { language } = useMainContext();
 
   // states
   const [viewPs, setViewPs] = useState([0, 0]);

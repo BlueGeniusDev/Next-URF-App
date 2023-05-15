@@ -5,6 +5,7 @@
  */
 
 // third-party libraries
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 // import global components
@@ -12,8 +13,9 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const Layout = ({ children }) => {
-  const router = useRouter();
-  const currentPath = router.pathname;
+  // global states
+  const navigator = useRouter();
+  const currentPath = navigator.pathname;
 
   return (
     <div className="flex flex-col min-h-screen">

@@ -5,7 +5,7 @@
  */
 
 // third-party libraries
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -26,9 +26,7 @@ const SignIn = () => {
   const navigator = useRouter();
 
   // global states
-  const states = useMainContext();
-  const language = states.language;
-  const loginRole = states.loginRole;
+  const { language, role } = useMainContext();
 
   // states
   const [viewPs, setViewPs] = useState(false);
@@ -74,7 +72,7 @@ const SignIn = () => {
   };
 
   // function to login
-  const login = async () => {
+  const handleLogin = async () => {
     if (values.email === "") {
       viewValid("email", language.required);
       return;
@@ -94,8 +92,20 @@ const SignIn = () => {
 
     setIsLoading(true);
     const res = await auth("sign-in", values);
-    if (res.code === 200) {
-      navigator.push(`${APP_URL}admin/sales`);
+    if (res.code !== 200) {
+      localStorage.setItem("accessToken", "res.accessToken");
+      switch (role) {
+        case "admin":
+          navigator.push(`${APP_URL}admin/sales`);
+          break;
+        case "sales":
+          break;
+        case "contractor":
+          break;
+
+        default:
+          break;
+      }
     } else {
       setAlertStatus("error");
       setAlertMsg(res.message);
@@ -103,15 +113,22 @@ const SignIn = () => {
     }
   };
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      navigator.push("/admin/sales");
+    }
+  }, [navigator]);
+
   return (
-    <main className="grid grid-cols-12 gap-5 mb-20 mobile:m-4 m-10 md:h-[460px] lg:h-[620px] xl:h-[720px]">
-      <div className="h-[450px] md:col-span-5 middle: col-span-12 mobile:col-span-12 mobile:p-2 p-4 md:mt-6 lg:mt-20 xl:mt-40 xxl:mt-40 md:mx-2 xl:mx-16 xxl:mx-20 bg-white rounded-md border-gray border-1 border border-solid drop-shadow-md">
+    <main className="grid grid-cols-12 gap-5 mobile:mx-4 middle:mx-4 m-10 md:h-[460px] lg:h-[620px] xl:h-[720px]">
+      <div className="h-[450px] md:col-span-5 middle:col-span-12 mobile:col-span-12 middle:p-0 mobile:p-0 p-4 md:mt-6 lg:mt-20 xl:mt-40 xxl:mt-40 md:mx-2 xl:mx-16 xxl:mx-20 bg-white rounded-md border-gray border-1 border border-solid drop-shadow-md">
         <h1 className="text-3xl text-lightBlack mb-6 font-bold">
           {language.welcomeBack}
         </h1>
         <div className="mb-3">
           <label
-            className={`mb-1 mobile:text-sm block ${
+            className={`mb-1 text-sm block ${
               validAlerts.email === ""
                 ? "text-inputLabelColor"
                 : "text-errorRed"
@@ -222,7 +239,7 @@ const SignIn = () => {
         <div className="grid grid-cols-2 gap-2 mt-10">
           <button
             className="box px-6 py-3 text-base text-white bg-primaryBlue rounded-md"
-            onClick={login}
+            onClick={handleLogin}
             disabled={isLoading}
           >
             {isLoading ? `${language.login} ...` : language.login}
@@ -241,7 +258,7 @@ const SignIn = () => {
       <div
         className="md:h-[480px] lg:h-[640px] xl:h-[760px] hidden md:block md:col-span-7 bg-svg bg-no-repeat rounded-md bg-left bg-cover max-h-auto"
         style={{
-          backgroundImage: `url('/images/login/${loginRole}.svg')`,
+          backgroundImage: `url('/images/login/${role}.svg')`,
           imageRendering: "pixelated",
         }}
       ></div>

@@ -5,7 +5,8 @@
  */
 
 // third-party libraries
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 // import components
@@ -25,10 +26,9 @@ import { useMainContext } from "@/context";
 import { auth } from "../api/auth";
 
 const SignUp = () => {
+  const navigator = useRouter();
   // get global states
-  const states = useMainContext();
-  const language = states.language;
-  const loginRole = states.loginRole;
+  const { language, role } = useMainContext();
 
   // states
   const [viewPs, setViewPs] = useState([0, 0]);
@@ -42,7 +42,7 @@ const SignUp = () => {
     postalCode: "",
     password: "",
     cpassword: "",
-    role: loginRole,
+    role: role,
   });
   const [validAlerts, setValidAlerts] = useState({
     email: "",
@@ -86,7 +86,7 @@ const SignUp = () => {
     return "";
   };
   const validatePhone = (val = values.phone) => {
-    const regex = /^\(\d{3}\)\d{3}-\d{4}/g;
+    const regex = /^\d{10}/g;
     if (!regex.test(val)) {
       return language.invalidPhone;
     }
@@ -161,6 +161,13 @@ const SignUp = () => {
     setAlertMsg(res.message);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      navigator.push("/admin/sales");
+    }
+  }, [navigator]);
 
   return (
     <main className="md:container md:mx-auto mobile:mx-0 mobile:w-full mobile:max-w-none">
@@ -331,7 +338,7 @@ const SignUp = () => {
                 name="Phone"
                 onChange={(e) => {
                   changeValue("phone", e);
-                  viewValid("phone", validatePhone(e.target.value));
+                  viewValid("phone", "");
                 }}
               />
             </label>

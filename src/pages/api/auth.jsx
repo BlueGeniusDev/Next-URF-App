@@ -4,6 +4,7 @@
  * updated_at: 2023.05.12
  */
 
+// import third-party libraries
 import axios from "axios";
 import { API_URL } from "../../resource/config";
 
@@ -20,14 +21,4 @@ export const auth = async (uri, data) => {
   } catch (res) {
     return res.response.data;
   }
-};
-
-export const isAuthenticated = () => {
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("token");
-    if (token && token !== "undefined") {
-      return true;
-    }
-  }
-  return false;
 };

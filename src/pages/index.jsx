@@ -5,12 +5,21 @@
  */
 
 // using context
+import { useEffect } from "react";
 import { useMainContext } from "@/context";
+import { useRouter } from "next/router";
 
 const Home = () => {
+  const navigator = useRouter();
   // get global states
-  const states = useMainContext();
-  const language = states.language;
+  const { language } = useMainContext();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      navigator.push("/admin/sales");
+    }
+  }, [navigator]);
 
   return (
     <main className="md:px-4 mb-12">

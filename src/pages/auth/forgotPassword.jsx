@@ -16,7 +16,7 @@ import { useMainContext } from "@/context";
 const ForgotPassword = () => {
   // get global states
   const states = useMainContext();
-  const language = states.language;
+  const { language } = useMainContext();
 
   // states
   const [values, setValues] = useState({

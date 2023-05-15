@@ -6,49 +6,49 @@
 
 // third-party libraries
 import { createContext, useContext, useEffect, useState } from "react";
-
-// Creating the user context
-const MainContext = createContext();
-
 // import language object
-import langObj from "@/resource/langObj";
 
+import langObj from "@/resource/langObj";
+// Creating the user context
+
+const MainContext = createContext();
 // Making the function which will wrap the whole app using Context Provider
-export const AppStore = ({ children }) => {
-  // language state
+export const MainContextProvider = ({ children }) => {
+  // states
   const [selectedLang, setSelectedLang] = useState("en");
   const [language, setLanguage] = useState({});
-  // login role
-  const [loginRole, setLoginRole] = useState("contractor");
+  const [isLoading, setIsLoading] = useState(false);
+  const [role, setRole] = useState("contractor");
 
   // global states
   const values = {
     selectedLang: selectedLang,
     language: language,
-    loginRole: loginRole,
+    role: role,
+    isLoading: isLoading,
+
     setSelectedLang: setSelectedLang,
-    setLoginRole: setLoginRole,
+    setRole: setRole,
   };
 
   useEffect(() => {
     // set language
-    if (sessionStorage.getItem("lang") !== null) {
-      setSelectedLang(sessionStorage.getItem("lang"));
+    if (localStorage.getItem("lang") !== null) {
+      setSelectedLang(localStorage.getItem("lang"));
     } else {
-      sessionStorage.setItem("lang", "en");
+      localStorage.setItem("lang", "en");
     }
     setLanguage(langObj[selectedLang]);
 
     // set login role
-    if (sessionStorage.getItem("loginRole") !== null) {
-      setLoginRole(sessionStorage.getItem("loginRole"));
+    if (localStorage.getItem("role") !== null) {
+      setRole(localStorage.getItem("role"));
     } else {
-      sessionStorage.setItem("loginRole", "contractor");
+      localStorage.setItem("role", "contractor");
     }
   }, [selectedLang]);
 
   return <MainContext.Provider value={values}>{children}</MainContext.Provider>;
 };
-
 // Make useMainContext Hook to easily use our context throughout the application
 export const useMainContext = () => useContext(MainContext);

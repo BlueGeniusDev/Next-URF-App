@@ -4,10 +4,11 @@
  * updated_at: 2023.05.09
  */
 
-import * as React from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+
 import SearchBox from "@/components/materials/SearchBox";
 import Image from "next/image";
-
 import userlist from "@/resource/userlist";
 import Table from "@/components/materials/Table";
 import NewUserDialog from "@/components/materials/Dialog";
@@ -16,11 +17,13 @@ import SuccessDialog from "@/components/materials/DialogSuccess";
 import SuccessDialogMo from "@/components/materials/DialogSuccessMo";
 
 const SalesAdmin = () => {
-  const [openNewUser, setOpenNewUser] = React.useState(false);
-  const [openSuccessUser, setSuccessUser] = React.useState(false);
-  const [newUser, setNewUser] = React.useState({});
-  const [selected, setSelected] = React.useState({});
-  const [action, setAction] = React.useState("add");
+  const navigator = useRouter();
+
+  const [openNewUser, setOpenNewUser] = useState(false);
+  const [openSuccessUser, setSuccessUser] = useState(false);
+  const [newUser, setNewUser] = useState({});
+  const [selected, setSelected] = useState({});
+  const [action, setAction] = useState("add");
   const btnNewUserClick = () => {
     setOpenNewUser(true);
     setAction("add");
@@ -41,6 +44,14 @@ const SalesAdmin = () => {
     setOpenNewUser(true);
     setSelected(userlist.find((item, index) => item.id === id));
   };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      navigator.push("/");
+    }
+  }, [navigator]);
+
   return (
     <main className="md:container mx-auto sm:px-6 px-10">
       <div className={openNewUser || openSuccessUser ? "mobile:hidden" : ""}>
