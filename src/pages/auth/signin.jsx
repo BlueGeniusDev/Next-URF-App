@@ -91,7 +91,7 @@ const SignIn = () => {
     }
 
     setIsLoading(true);
-    const res = await auth("sign-in", values);
+    const res = await auth("auth/sign-in", values);
     if (res.code === 200) {
       localStorage.setItem("accessToken", "res.accessToken");
       switch (role) {

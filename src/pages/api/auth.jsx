@@ -14,11 +14,13 @@ export const auth = async (uri, data) => {
       data,
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        Accept: "application/json, application/xml",
       },
     });
+    console.log(res)
     return res.response.data;
   } catch (res) {
+    console.log(res)
     return res.response.data;
   }
 };

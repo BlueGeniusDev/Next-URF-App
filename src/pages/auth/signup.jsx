@@ -42,7 +42,7 @@ const SignUp = () => {
     postalCode: "",
     password: "",
     cpassword: "",
-    role: role,
+    role: "crew",
   });
   const [validAlerts, setValidAlerts] = useState({
     email: "",
@@ -85,13 +85,6 @@ const SignUp = () => {
     }
     return "";
   };
-  const validatePhone = (val = values.phone) => {
-    const regex = /^\d{10}/g;
-    if (!regex.test(val)) {
-      return language.invalidPhone;
-    }
-    return "";
-  };
   const viewValid = (field, val) => {
     setValidAlerts({ ...validAlerts, [field]: val });
   };
@@ -115,7 +108,7 @@ const SignUp = () => {
       return;
     }
     if (values.phone === "") {
-      viewValid("phone", language.required);
+      viewValid("blank", "phone");
       return;
     }
     if (values.mailingAddress === "") {
@@ -146,13 +139,13 @@ const SignUp = () => {
       viewValid("cpassword", validateCPassword());
       return;
     }
-    if (validatePhone() !== "") {
-      viewValid("phone", validatePhone());
-      return;
-    }
+
+    delete values.cpassword;
 
     setIsLoading(true);
-    const res = await auth("sign-up", values);
+    console.log(values)
+    const res = await auth("auth/sign-up", values);
+    console.log(res);
     if (res.code === 200) {
       setAlertStatus("success");
     } else {
@@ -312,9 +305,9 @@ const SignUp = () => {
           <div className="mb-3">
             <label
               className={`mb-1 mobile:text-sm block ${
-                validAlerts.phone === ""
-                  ? "text-inputLabelColor"
-                  : "text-errorRed"
+                validAlerts.blank === "phone"
+                  ? "text-errorRed"
+                  : "text-inputLabelColor"
               }`}
             >
               {language.phone}
@@ -329,23 +322,23 @@ const SignUp = () => {
               <input
                 value={values.phone}
                 className={`mobile:pl-8 mobile:px-2 placeholder:text-slate-400 text-md w-full block rounded-lg border-1 bg-transparent py-3 pl-12 px-5 font-medium outline-none transition disabled:cursor-default disabled:bg-whiter dark:bg-form-input ${
-                  validAlerts.phone === ""
-                    ? "focus:border-primaryBlue active:border-primaryBlue"
-                    : "border-errorRed focus:border-errorRed active:border-errorRed active:border-2"
+                  validAlerts.blank === "phone"
+                    ? "border-errorRed focus:border-errorRed focus: border-2 active:border-errorRed active:border-2"
+                    : "focus:border-primaryBlue active:border-primaryBlue"
                 }`}
-                placeholder="(123)456-7890"
+                placeholder={language.phone}
                 type="text"
                 name="Phone"
                 onChange={(e) => {
                   changeValue("phone", e);
-                  viewValid("phone", "");
+                  setValidAlerts({ ...validAlerts, blank: "" });
                 }}
               />
             </label>
-            {validAlerts.phone === "" ? (
-              <></>
+            {validAlerts.blank === "phone" ? (
+              <h6 className="text-errorRed">{language.required}</h6>
             ) : (
-              <h6 className="text-errorRed">{validAlerts.phone}</h6>
+              <></>
             )}
           </div>
         </div>
