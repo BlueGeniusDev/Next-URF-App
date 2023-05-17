@@ -58,13 +58,13 @@ const SalesAdmin = () => {
   }, [navigator]);
 
   return (
-    <main className="mx-10">
+    <main className="mx-10 mobile:mx-4">
       <div className={openNewUser || openSuccessUser ? "mobile:hidden" : ""}>
         <h1 className="sm:text-[34.42px] text-[32px] font-medium text-[#16181D] block md:float-left mt-10 mb-10">
           {language.users}
         </h1>
         <button
-          className="box float-right font-normal md:mt-11 mb-11 text-lg pl-[23px] pr-[28.25px] py-[14px] text-white bg-primaryBlue rounded-md ml-4"
+          className="box float-right font-normal md:mt-11 text-lg pl-[23px] pr-[28.25px] py-[14px] mobile:px-3 text-white bg-primaryBlue rounded-md ml-4"
           onClick={btnNewUserClick}
         >
           <span>{language.createNewUser}</span>
@@ -76,7 +76,7 @@ const SalesAdmin = () => {
             height={16}
           />
         </button>
-        <SearchBox className="md:clear-both" />
+        <SearchBox className="md:clear-both mb-6" />
         <Table data={userlist} editUser={editUser} />
       </div>
       <NewUserDialog
