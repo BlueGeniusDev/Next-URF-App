@@ -4,6 +4,7 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useMainContext } from "@/context";
 
 const searchBoxTheme = createTheme({
   components: {
@@ -60,6 +61,8 @@ const searchBoxTheme = createTheme({
 });
 
 export default function SearchBox(props) {
+  const {language} = useMainContext();
+
   return (
     <ThemeProvider theme={searchBoxTheme}>
       <Paper
@@ -80,7 +83,7 @@ export default function SearchBox(props) {
         </IconButton>
         <InputBase
           sx={{ ml: 1, flex: 1 }}
-          placeholder="Search by name"
+          placeholder={language.searchByName}
           inputProps={{ "aria-label": "Search by name" }}
           defaultValue={props.defaultValue}
         />

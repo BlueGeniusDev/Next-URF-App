@@ -8,10 +8,21 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { useMainContext } from "@/context";
+
 import LoginMenu from "./LoginMenu";
 import LangMenu from "./LangMenu";
+import ProfileMenu from "./ProfileMenu";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+  const { accessToken, language } = useMainContext();
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    setToken(localStorage.getItem("accessToken"));
+  }, [token, accessToken]);
+
   return (
     <header className="border-b border-bottomColor bg-[#f9fafb] py-4 mobile:bg-white">
       <nav className="w-full">
@@ -26,9 +37,18 @@ const Header = () => {
               />
             </Link>
           </div>
-          <div className="flex items-center gap-2 mobile:w-full mobile:flex mobile:justify-between mobile:pr-8">
+          <div className="flex items-center gap-2 mobile:w-full mobile:flex mobile:justify-between mobile:px-4">
+            {token ? (
+              <Link href="/">
+                <button className="box sm:px-4 px-10 py-3 text-lg text-neutral600 font-outfit font-normal bg-white rounded-md flex flex-wrap gap-2">
+                  {language.myProject}
+                </button>
+              </Link>
+            ) : (
+              ""
+            )}
             <LangMenu />
-            <LoginMenu />
+            {token ? <ProfileMenu /> : <LoginMenu />}
           </div>
         </div>
       </nav>

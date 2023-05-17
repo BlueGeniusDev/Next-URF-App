@@ -35,8 +35,6 @@ const AlertMessage = ({ status, msg }) => {
       className="mt-4"
       variant="gradient"
       icon={icon}
-      open={open}
-      onClose={() => setOpen(false)}
     >
       {msg}
     </Alert>

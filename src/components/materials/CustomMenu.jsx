@@ -5,9 +5,11 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import IconButton from '@mui/material/IconButton';
+import IconButton from "@mui/material/IconButton";
+import { useMainContext } from "@/context";
 
 export default function CustomMenu(props) {
+  const { language } = useMainContext();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -48,8 +50,14 @@ export default function CustomMenu(props) {
                 handleClose();
               }}
             >
-              <Image alt="" src="/trash.svg" width={14} height={18} className="inline" />{" "}
-              <span className="text-base font-norma ml-2 mt-1">Delete</span>
+              <Image
+                alt=""
+                src="/trash.svg"
+                width={14}
+                height={18}
+                className="inline"
+              />{" "}
+              <span className="text-base font-norma ml-2 mt-1">{language.delete}</span>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -59,9 +67,15 @@ export default function CustomMenu(props) {
                 handleClose();
               }}
             >
-              <Image alt="" src="/trash.svg" width={14} height={18} className="inline" />{" "}
+              <Image
+                alt=""
+                src="/trash.svg"
+                width={14}
+                height={18}
+                className="inline"
+              />{" "}
               <span className="text-base font-norma ml-2 mt-1">
-                Reset Password
+                {language.resetPassword}
               </span>
             </ListItemButton>
           </ListItem>

@@ -7,8 +7,8 @@ module.exports = withMT({
     screens: {
       sm: "280px",
       lm: "450px",
-      mobile: { min: "128px", max: "520px" },
-      middle: { min: "521px", max: "767px" },
+      mobile: { min: "128px", max: "540px" },
+      middle: { min: "541px", max: "767px" },
       md: "768px",
       lg: "1024px",
       xl: "1280px",
@@ -37,6 +37,7 @@ module.exports = withMT({
       neutral700: "#263240",
       neutral600: "#303E4F",
       neutral500: "#6C7E93",
+      neutral400: "#363636",
       successGreen: "#10A731",
       successGreenLight: "#DFF7E4",
       errorRed: "#DA1212",

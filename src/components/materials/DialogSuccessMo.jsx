@@ -1,8 +1,11 @@
 import * as React from "react";
 import { CustomTextField } from "./CustomTextField";
 import Image from "next/image";
+import { useMainContext } from "@/context";
 
 export default function SuccessDialogMo(props) {
+  const { language } = useMainContext();
+
   return (
     <div className={props.className}>
       <div className="flex justify-center">
@@ -22,12 +25,12 @@ export default function SuccessDialogMo(props) {
           marginBottom: "24px",
         }}
       >
-        The user was created
+        {language.createdSuccess1}
       </h2>
-      <p>An email will be sent to the user with this information to login</p>
-      <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">Name</p>
+      <p>{language.createdSuccess2}</p>
+      <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.name}</p>
       <CustomTextField fullWidth variant="outlined" value={props.data.name} />
-      <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">Password</p>
+      <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.password}</p>
       <CustomTextField
         fullWidth
         variant="outlined"
@@ -38,7 +41,7 @@ export default function SuccessDialogMo(props) {
         className="box font-normal text-lg px-[18px] py-[14px] text-white bg-primaryBlue rounded-md w-full"
         onClick={props.closeDialog}
       >
-        Go back to dashboard
+        {language.goBackToDashboard}
       </button>
     </div>
   );

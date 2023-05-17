@@ -15,8 +15,11 @@ import NewUserDialog from "@/components/materials/Dialog";
 import NewUserDialogMo from "@/components/materials/DialogMo";
 import SuccessDialog from "@/components/materials/DialogSuccess";
 import SuccessDialogMo from "@/components/materials/DialogSuccessMo";
+import jwtDecode from "jwt-decode";
+import { useMainContext } from "@/context";
 
 const SalesAdmin = () => {
+  const { language } = useMainContext();
   const navigator = useRouter();
 
   const [openNewUser, setOpenNewUser] = useState(false);
@@ -46,23 +49,25 @@ const SalesAdmin = () => {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      navigator.push("/");
+    if (!localStorage.getItem("accessToken")) {
+      const jwt_payload = jwtDecode(localStorage.getItem("accessToken"));
+      if (jwt_payload.organizationRole !== "admin-sales") {
+        navigator.push("/");
+      }
     }
   }, [navigator]);
 
   return (
-    <main className="md:container mx-auto sm:px-6 px-10">
+    <main className="mx-10">
       <div className={openNewUser || openSuccessUser ? "mobile:hidden" : ""}>
         <h1 className="sm:text-[34.42px] text-[32px] font-medium text-[#16181D] block md:float-left mt-10 mb-10">
-          Users
+          {language.users}
         </h1>
         <button
           className="box float-right font-normal md:mt-11 mb-11 text-lg pl-[23px] pr-[28.25px] py-[14px] text-white bg-primaryBlue rounded-md ml-4"
           onClick={btnNewUserClick}
         >
-          <span>Create New User</span>
+          <span>{language.createNewUser}</span>
           <Image
             src="/plus.svg"
             alt="Logo"
@@ -93,7 +98,6 @@ const SalesAdmin = () => {
         selectedUser={selected}
       />
       <SuccessDialog
-        //   openDialog={btnSuccessClick}
         closeDialog={closeSuccessDialog}
         data={newUser}
         open={openSuccessUser}

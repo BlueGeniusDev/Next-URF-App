@@ -4,6 +4,7 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useMainContext } from "@/context";
 
 const mailBoxTheme = createTheme({
   components: {
@@ -44,6 +45,8 @@ const mailBoxTheme = createTheme({
 });
 
 export default function MailBox(props) {
+  const { language } = useMainContext();
+
   return (
     <ThemeProvider theme={mailBoxTheme}>
       <Paper
@@ -65,7 +68,7 @@ export default function MailBox(props) {
         </IconButton>
         <InputBase
           sx={{ ml: 1, flex: 1 }}
-          placeholder="Email"
+          placeholder={language.email}
           inputProps={{ "aria-label": "Email" }}
           defaultValue={props.defaultValue}
         />

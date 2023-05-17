@@ -37,14 +37,14 @@ const LangMenu = () => {
     <div className="relative">
       {/* Dropdown button */}
       <button
-        className="box px-10 py-3 text-lg text-neutral600 font-outfit font-normal bg-white rounded-md flex flex-wrap gap-2"
+        className="box sm:px-4 px-10 py-3 text-lg text-neutral600 font-outfit font-normal bg-white rounded-md flex flex-wrap gap-2"
         onClick={toggleDropdown}
       >
         {language.lang}
         <Image
           src="/images/dropdown_black.svg"
           alt=""
-          className="pt-3"
+          className="pt-2.5"
           width={12}
           height={12}
           priority

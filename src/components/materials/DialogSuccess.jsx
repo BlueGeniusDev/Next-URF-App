@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { CustomTextField } from "./CustomTextField";
 import Image from "next/image";
+import { useMainContext } from "@/context";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& div.MuiPaper-root": {
@@ -52,14 +53,16 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
+
 export default function SuccessDialog(props) {
+  const { language } = useMainContext();
+
   return (
     <BootstrapDialog
       onClose={props.closeDialog}
       aria-labelledby="customized-dialog-title"
       open={props.open}
       className="mobile:hidden"
-      // sx={{ width: "555px", height: "544px", borderRadius: "16px" }}
     >
       <BootstrapDialogTitle
         id="customized-dialog-title"
@@ -83,12 +86,12 @@ export default function SuccessDialog(props) {
             marginBottom: "24px",
           }}
         >
-          The user was created
+          {language.createdSuccess1}
         </h2>
-        <p>An email will be sent to the user with this information to login</p>
-        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">Name</p>
+        <p>{language.createdSuccess2}</p>
+        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.name}</p>
         <CustomTextField fullWidth variant="outlined" value={props.data.name} />
-        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">Password</p>
+        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.password}</p>
         <CustomTextField
           fullWidth
           variant="outlined"
@@ -99,7 +102,7 @@ export default function SuccessDialog(props) {
           className="box font-normal text-lg px-[18px] py-[14px] text-white bg-primaryBlue rounded-md w-full"
           onClick={props.closeDialog}
         >
-          Go back to dashboard
+          {language.goBackToDashboard}
         </button>
       </DialogContent>
       <DialogActions />

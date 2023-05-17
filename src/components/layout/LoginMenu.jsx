@@ -14,7 +14,7 @@ import { useMainContext } from "@/context";
 
 const LoginMenu = () => {
   // get global states
-  const {language, setRole} = useMainContext();
+  const { language, setLoginImg } = useMainContext();
 
   // states
   const [isOpen, setIsOpen] = useState(false);
@@ -23,12 +23,12 @@ const LoginMenu = () => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const hideDropdown = (role) => {
-    if (role === null) {
-      localStorage.setItem("role", localStorage.getItem("role"));
+  const hideDropdown = (loginImg) => {
+    if (loginImg === null) {
+      localStorage.setItem("loginImg", localStorage.getItem("loginImg"));
     } else {
-      localStorage.setItem("role", role);
-      setRole(role);
+      localStorage.setItem("loginImg", loginImg);
+      setLoginImg(loginImg);
     }
     setIsOpen(false);
   };
@@ -37,14 +37,14 @@ const LoginMenu = () => {
     <div className="relative">
       {/* Dropdown button */}
       <button
-        className="box px-10 py-3 text-lg text-white font-outfit font-normal bg-primaryBlue rounded-md flex flex-wrap gap-2"
+        className="box sm:px-4 px-10 py-3 text-lg text-white font-outfit font-normal bg-primaryBlue rounded-md flex flex-wrap gap-2"
         onClick={toggleDropdown}
       >
         {language.login}
         <Image
           src="/images/dropdown_white.svg"
           alt=""
-          className="pt-3 w-auto h-auto"
+          className="pt-2.5 w-auto h-auto"
           width={12}
           height={12}
           priority
@@ -60,7 +60,9 @@ const LoginMenu = () => {
           <Link
             href="/auth/signin"
             className="flex box px-6 py-3 pr-0 text-lg text-neutral600 hover:bg-dropdownHover"
-            onClick={() => {hideDropdown("contractor")}}
+            onClick={() => {
+              hideDropdown("contractor");
+            }}
           >
             <Image
               src="/images/contractor.svg"
@@ -77,7 +79,9 @@ const LoginMenu = () => {
           <Link
             href="/auth/signin"
             className="flex box px-6 py-3 text-lg text-neutral600 hover:bg-dropdownHover"
-            onClick={() => {hideDropdown("sales")}}
+            onClick={() => {
+              hideDropdown("sales");
+            }}
           >
             <Image
               src="/images/sales.svg"
@@ -94,7 +98,9 @@ const LoginMenu = () => {
           <Link
             href="/auth/signin"
             className="flex box px-6 py-3 text-lg text-neutral600 hover:bg-dropdownHover"
-            onClick={() => {hideDropdown("admin")}}
+            onClick={() => {
+              hideDropdown("admin");
+            }}
           >
             <Image
               src="/images/admin.svg"
@@ -109,7 +115,9 @@ const LoginMenu = () => {
             </p>
           </Link>
           <div
-            onClick={() => {hideDropdown(null)}}
+            onClick={() => {
+              hideDropdown(null);
+            }}
             style={{
               position: "fixed",
               top: "0px",

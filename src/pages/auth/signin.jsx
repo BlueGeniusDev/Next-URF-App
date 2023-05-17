@@ -6,7 +6,6 @@
 
 // third-party libraries
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 // import components
@@ -16,17 +15,9 @@ import AlertMessage from "@/components/materials/AlertMessage";
 // using context
 import { useMainContext } from "@/context";
 
-// import sign-in api
-import { auth } from "../api/auth";
-
-// import resource
-import { APP_URL } from "../../resource/config";
-
 const SignIn = () => {
-  const navigator = useRouter();
-
   // global states
-  const { language, role } = useMainContext();
+  const { language, loginImg, login, accessToken, isAuthed } = useMainContext();
 
   // states
   const [viewPs, setViewPs] = useState(false);
@@ -64,7 +55,7 @@ const SignIn = () => {
     if (val.length < 8) {
       return language.passValid1;
     }
-    const regex = /(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+    const regex = /[a-zA-Z0-9!@#$%^&*]{8,}$/;
     if (!regex.test(val)) {
       return language.passValid2;
     }
@@ -91,34 +82,20 @@ const SignIn = () => {
     }
 
     setIsLoading(true);
-    const res = await auth("auth/sign-in", values);
-    if (res.code === 200) {
-      localStorage.setItem("accessToken", "res.accessToken");
-      switch (role) {
-        case "admin":
-          navigator.push(`${APP_URL}admin/sales`);
-          break;
-        case "sales":
-          break;
-        case "contractor":
-          break;
-
-        default:
-          break;
-      }
-    } else {
+    await login(values);
+    if (localStorage.getItem("loginMsg")) {
       setAlertStatus("error");
-      setAlertMsg(res.message);
-      setIsLoading(false);
+      setAlertMsg(localStorage.getItem("loginMsg"));
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      navigator.push("/admin/sales");
-    }
-  }, [navigator]);
+    const checkAuth = async () => {
+      await isAuthed();
+    };
+    checkAuth();
+  });
 
   return (
     <main className="grid grid-cols-12 gap-5 mobile:mx-4 middle:mx-4 m-10 md:h-[460px] lg:h-[620px] xl:h-[720px]">
@@ -258,7 +235,7 @@ const SignIn = () => {
       <div
         className="md:h-[480px] lg:h-[640px] xl:h-[760px] hidden md:block md:col-span-7 bg-svg bg-no-repeat rounded-md bg-left bg-cover max-h-auto"
         style={{
-          backgroundImage: `url('/images/login/${role}.svg')`,
+          backgroundImage: `url('/images/login/${loginImg}.svg')`,
           imageRendering: "pixelated",
         }}
       ></div>

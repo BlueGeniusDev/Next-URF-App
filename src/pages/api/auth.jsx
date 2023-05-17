@@ -5,22 +5,22 @@
  */
 
 // import third-party libraries
-import axios from "axios";
 import { API_URL } from "../../resource/config";
 
-export const auth = async (uri, data) => {
+export const auth = async (uri, values, lang) => {
   try {
-    const res = await axios.post(`${API_URL}${uri}`, {
-      data,
+    let al = lang === "sp" ? "es" : lang;
+
+    const res = await fetch(`${API_URL}${uri}`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json, application/xml",
+        "Accept-Language": al,
       },
+      body: JSON.stringify(values),
     });
-    console.log(res)
-    return res.response.data;
-  } catch (res) {
-    console.log(res)
-    return res.response.data;
+    return await res.json();
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -5,25 +5,28 @@
  */
 
 import React from "react";
-import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
+import EditIcon from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
 import CustomMenu from "./CustomMenu";
+import { useMainContext } from "@/context";
 
 function Table(props) {
+  const { language } = useMainContext();
   const fnDelete = (i) => {
     console.log(i);
   };
   const fnReset = (i) => {
     console.log(i);
   };
+
   return (
     <table className="table-auto w-full">
       <thead>
         <tr>
           <th className="text-left text-sm text-[#6C7E93]">
-            <p className="hidden md:inline">Name</p>
+            <p className="hidden md:inline">{language.name}</p>
           </th>
-          <th className="hidden md:inline text-sm text-[#6C7E93]">Email</th>
+          <th className="hidden md:inline text-sm text-[#6C7E93]">{language.email}</th>
           <th></th>
         </tr>
       </thead>
@@ -41,7 +44,10 @@ function Table(props) {
             </td>
             <td className="hidden md:inline-block mt-7">{item.email}</td>
             <td className="mt-8 text-right">
-              <IconButton aria-label="edit" onClick={(e) => props.editUser(item.id)}>
+              <IconButton
+                aria-label="edit"
+                onClick={(e) => props.editUser(item.id)}
+              >
                 <EditIcon />
               </IconButton>
               <CustomMenu i={item.id} fnDelete={fnDelete} fnReset={fnReset} />

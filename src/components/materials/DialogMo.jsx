@@ -4,9 +4,12 @@ import CustomSelect from "./CustomSelect";
 import { CustomTextField } from "./CustomTextField";
 import AlertMessage from "./AlertMessage";
 import Image from "next/image";
+import { useMainContext } from "@/context";
 
 export default function NewUserDialogMo(props) {
+  const { language } = useMainContext();
   const [error, setError] = React.useState({});
+
   return (
     <div className={props.className}>
       <div style={{ position: "relative", height: "108px" }}>
@@ -28,13 +31,12 @@ export default function NewUserDialogMo(props) {
             marginBottom: "24px",
           }}
         >
-          {props.action === "add" ? "Create New User" : "Edit User"}
+          {props.action === "add" ? language.createNewUser : language.editUser}
         </h2>
         <CustomSelect
-          Label="Name"
+          Label={language.name}
           data={props.data}
-          placeholde={"Select from our database"}
-          //   theme={selectTheme}
+          placeholde={language.selectName}
           defaultValue={props.action === "add" ? "0" : props.selectedUser.id}
           fullWidth
         />
@@ -48,7 +50,7 @@ export default function NewUserDialogMo(props) {
               : "#0553A4",
           }}
         >
-          Email
+          {language.email}
         </p>
         <MailBox
           className="w-full"
@@ -73,14 +75,14 @@ export default function NewUserDialogMo(props) {
             className="box font-normal text-lg px-[18px] py-[14px] text-white bg-primaryBlue rounded-md"
             onClick={props.createNewUser}
           >
-            {props.action === "add" ? "Create New User" : "Edit"}
+            {props.action === "add" ? language.createNewUser : language.editUser}
           </button>
           <button
-            className="box float-right font-normal text-lg px-[18px] py-[14px] text-black bg-white border-primaryBlue border rounded-md"
+            className="box float-right font-normal text-lg px-[5px] py-[14px] text-black bg-white border-primaryBlue border rounded-md"
             sx={{ float: "right" }}
             onClick={props.closeDialog}
           >
-            Cancel
+            {language.cancel}
           </button>
         </div>
         {Object.keys(error).length !== 0 ? (

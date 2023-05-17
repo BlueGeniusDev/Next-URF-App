@@ -6,7 +6,6 @@
 
 // third-party libraries
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 // import components
@@ -26,12 +25,12 @@ import { useMainContext } from "@/context";
 import { auth } from "../api/auth";
 
 const SignUp = () => {
-  const navigator = useRouter();
   // get global states
-  const { language, role } = useMainContext();
+  const { language, selectedLang, isAuthed } = useMainContext();
 
   // states
   const [viewPs, setViewPs] = useState([0, 0]);
+  const [cpassword, setCpassword] = useState("");
   const [values, setValues] = useState({
     name: "",
     lastName: "",
@@ -41,7 +40,6 @@ const SignUp = () => {
     phone: "",
     postalCode: "",
     password: "",
-    cpassword: "",
     role: "crew",
   });
   const [validAlerts, setValidAlerts] = useState({
@@ -58,6 +56,9 @@ const SignUp = () => {
   // change states
   const changeValue = (field, e) => {
     setValues({ ...values, [field]: e.target.value });
+  };
+  const changeCPassword = (value) => {
+    setCpassword(value);
   };
 
   // validates
@@ -79,7 +80,7 @@ const SignUp = () => {
     }
     return "";
   };
-  const validateCPassword = (val = values.cpassword) => {
+  const validateCPassword = (val = cpassword) => {
     if (val !== values.password) {
       return language.notMatchPassword;
     }
@@ -123,7 +124,7 @@ const SignUp = () => {
       viewValid("password", language.required);
       return;
     }
-    if (values.cpassword === "") {
+    if (cpassword === "") {
       viewValid("cpassword", language.required);
       return;
     }
@@ -140,27 +141,21 @@ const SignUp = () => {
       return;
     }
 
-    delete values.cpassword;
-
     setIsLoading(true);
-    console.log(values)
-    const res = await auth("auth/sign-up", values);
-    console.log(res);
-    if (res.code === 200) {
+    const res = await auth("auth/sign-up", values, selectedLang);
+    if (!res.code) {
       setAlertStatus("success");
-    } else {
-      setAlertStatus("error");
     }
     setAlertMsg(res.message);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      navigator.push("/admin/sales");
-    }
-  }, [navigator]);
+    const checkAuth = async () => {
+      await isAuthed();
+    };
+    checkAuth();
+  });
 
   return (
     <main className="md:container md:mx-auto mobile:mx-0 mobile:w-full mobile:max-w-none">
@@ -502,7 +497,7 @@ const SignUp = () => {
                   </span>
                 </button>
                 <input
-                  value={values.cpassword}
+                  value={cpassword}
                   className={`mobile:px-2 placeholder:text-slate-400 text-md w-full block rounded-lg border-1 bg-transparent py-3 pl-5 px-5 font-medium outline-none transition disabled:cursor-default disabled:bg-whiter dark:bg-form-input ${
                     validAlerts.cpassword === ""
                       ? "focus:border-primaryBlue active:border-primaryBlue"
@@ -512,7 +507,7 @@ const SignUp = () => {
                   type={viewPs[1] ? "text" : "password"}
                   name="confirmPassword"
                   onChange={(e) => {
-                    changeValue("cpassword", e);
+                    changeCPassword(e.target.value);
                     viewValid("cpassword", validateCPassword(e.target.value));
                   }}
                 />

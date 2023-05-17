@@ -11,6 +11,7 @@ import CustomSelect from "./CustomSelect";
 import { CustomTextField } from "./CustomTextField";
 import MailBox from "./MailBox";
 import AlertMessage from "./AlertMessage";
+import { useMainContext } from "@/context";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& div.MuiPaper-root": {
@@ -56,7 +57,9 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export default function NewUserDialog(props) {
+  const { language } = useMainContext();
   const [error, setError] = React.useState({});
+
   return (
     <BootstrapDialog
       onClose={props.closeDialog}
@@ -77,13 +80,12 @@ export default function NewUserDialog(props) {
             marginBottom: "24px",
           }}
         >
-          {props.action === "add" ? "Create New User" : "Edit User"}
+          {props.action === "add" ? language.createNewUser : language.editUser}
         </h2>
         <CustomSelect
-          Label="Name"
+          Label={language.name}
           data={props.data}
-          placeholde={"Select from our database"}
-          //   theme={selectTheme}
+          placeholde={language.selectName}
           defaultValue={props.action === "add" ? "0" : props.selectedUser.id}
           fullWidth
         />
@@ -97,7 +99,7 @@ export default function NewUserDialog(props) {
               : "#0553A4",
           }}
         >
-          Email
+          {language.email}
         </p>
         <MailBox
           className="w-full"
@@ -110,7 +112,7 @@ export default function NewUserDialog(props) {
           }
           defaultValue={props.action === "add" ? "" : props.selectedUser.email}
         />
-        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">Role</p>
+        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.role}</p>
         <CustomTextField
           fullWidth
           variant="outlined"
@@ -119,17 +121,17 @@ export default function NewUserDialog(props) {
         />
         <div className="grid gap-4 grid-cols-2 mb-[10px]">
           <button
-            className="box font-normal text-lg px-[18px] py-[14px] text-white bg-primaryBlue rounded-md"
+            className="box font-normal text-lg px-[5px] py-[14px] text-white bg-primaryBlue rounded-md"
             onClick={props.createNewUser}
           >
-            {props.action === "add" ? "Create New User" : "Edit"}
+            {props.action === "add" ? language.createNewUser : language.edit}
           </button>
           <button
             className="box float-right font-normal text-lg px-[18px] py-[14px] text-black bg-white border-primaryBlue border rounded-md"
             sx={{ float: "right" }}
             onClick={props.closeDialog}
           >
-            Cancel
+            {language.cancel}
           </button>
         </div>
         {Object.keys(error).length !== 0 ? (
