@@ -11,7 +11,7 @@ export const auth = async (uri, values, lang) => {
   try {
     let al = lang === "sp" ? "es" : lang;
 
-    const res = await fetch(`${API_URL}${uri}`, {
+    const res = await fetch(`${API_URL}/auth/${uri}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

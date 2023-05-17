@@ -6,17 +6,22 @@
 
 // third-party libraries
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 // react components
 import { FaRegEnvelope } from "react-icons/fa";
+import AlertMessage from "@/components/materials/AlertMessage";
 
 // using context
 import { useMainContext } from "@/context";
 
+// import api
+import { auth } from "../api/auth";
+
 const ForgotPassword = () => {
+  const navigator = useRouter();
   // get global states
-  const states = useMainContext();
-  const { language } = useMainContext();
+  const { language, selectedLang } = useMainContext();
 
   // states
   const [values, setValues] = useState({
@@ -25,6 +30,9 @@ const ForgotPassword = () => {
   const [validAlerts, setValidAlerts] = useState({
     email: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertStatus, setAlertStatus] = useState("");
 
   // change states
   const changeValue = (field, e) => {
@@ -45,7 +53,7 @@ const ForgotPassword = () => {
   };
 
   // function to send verification
-  const sendVerify = () => {
+  const sendVerify = async () => {
     if (values.email === "") {
       viewValid("email", language.required);
       return;
@@ -55,7 +63,27 @@ const ForgotPassword = () => {
       return;
     }
 
-    console.log(values);
+    function gotToSetNewPass() {
+      localStorage.setItem("token", res.token);
+      navigator.push("/auth/setNewPassword");
+      setIsLoading(false);
+      setAlertMsg("");
+    }
+
+    setIsLoading(true);
+    const res = await auth(
+      "forgot-password/request",
+      values,
+      selectedLang
+    );
+    if (res.code) {
+      setAlertStatus("error");
+      setIsLoading(false)
+    } else {
+      setAlertStatus("success");
+      setTimeout(gotToSetNewPass, 2000);
+    }
+    setAlertMsg(res.message);
   };
 
   return (
@@ -110,10 +138,14 @@ const ForgotPassword = () => {
           <button
             className="box px-6 py-3 text-base text-white bg-primaryBlue rounded-md w-full"
             onClick={sendVerify}
+            disabled={isLoading}
           >
-            {language.continue}
+            {isLoading ? `${language.continue} ...` : language.continue}
           </button>
         </div>
+        {alertMsg && (
+          <AlertMessage status={alertStatus} msg={alertMsg}></AlertMessage>
+        )}
       </div>
     </main>
   );

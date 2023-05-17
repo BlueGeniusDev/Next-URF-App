@@ -40,7 +40,7 @@ export const MainContextProvider = ({ children }) => {
 
     // function to login user
     login: async (loginvalues) => {
-      const res = await auth("auth/sign-in", loginvalues, selectedLang);
+      const res = await auth("sign-in", loginvalues, selectedLang);
 
       if (!res.code) {
         setAccessToken(res.accessToken);

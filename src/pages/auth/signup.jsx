@@ -142,7 +142,7 @@ const SignUp = () => {
     }
 
     setIsLoading(true);
-    const res = await auth("auth/sign-up", values, selectedLang);
+    const res = await auth("sign-up", values, selectedLang);
     if (!res.code) {
       setAlertStatus("success");
     }

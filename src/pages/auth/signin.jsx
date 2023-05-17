@@ -142,10 +142,12 @@ const SignIn = () => {
             <h6 className="text-errorRed">{validAlerts.email}</h6>
           )}
         </div>
-        <div className="mb-5">
+        <div className="mb-3">
           <label
-            className={`mb-1 block text-inputLabelColor dark:text-white text-sm ${
-              validAlerts.password === "" ? "text-black" : "text-errorRed"
+            className={`mb-1 mobile:text-sm block ${
+              validAlerts.password === ""
+                ? "text-inputLabelColor"
+                : "text-errorRed"
             }`}
           >
             {language.password}
@@ -174,13 +176,13 @@ const SignIn = () => {
             </button>
             <input
               value={values.password}
-              className={`placeholder:text-slate-400 text-md w-full block rounded-lg border-1 border-primary bg-transparent py-3 pl-5 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:bg-form-input ${
+              className={`mobile:px-2 placeholder:text-slate-400 text-md w-full block rounded-lg border-1 bg-transparent py-3 pl-5 px-5 font-medium outline-none transition disabled:cursor-default disabled:bg-whiter dark:bg-form-input ${
                 validAlerts.password === ""
                   ? "focus:border-primaryBlue active:border-primaryBlue"
                   : "border-errorRed focus:border-errorRed active:border-errorRed active:border-2"
               }`}
               placeholder={language.password}
-              type={viewPs ? "text" : "password"}
+              type={viewPs[0] ? "text" : "password"}
               name="Password"
               onChange={(e) => {
                 changeValue("password", e);

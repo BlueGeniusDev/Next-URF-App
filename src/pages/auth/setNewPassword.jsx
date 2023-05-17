@@ -6,14 +6,21 @@
 
 // third-party libraries
 import { useState } from "react";
+import { useRouter } from "next/router";
+
+// react components
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import AlertMessage from "@/components/materials/AlertMessage";
 
 // using context
 import { useMainContext } from "@/context";
 
+import { auth } from "../api/auth";
+
 const SetNewPassword = () => {
+  const navigator = useRouter();
   // get global states
-  const { language } = useMainContext();
+  const { language, selectedLang } = useMainContext();
 
   // states
   const [viewPs, setViewPs] = useState([0, 0]);
@@ -26,6 +33,9 @@ const SetNewPassword = () => {
     cpassword: "",
     blank: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertStatus, setAlertStatus] = useState("");
 
   // change states
   const changeValue = (field, e) => {
@@ -56,7 +66,7 @@ const SetNewPassword = () => {
   };
 
   // function to send for set new password
-  const setNewPassword = () => {
+  const setNewPassword = async () => {
     if (values.password === "") {
       viewValid("password", language.required);
       return;
@@ -74,11 +84,30 @@ const SetNewPassword = () => {
       return;
     }
 
-    const sendData = {
-      newPassword: values.password,
-      token: "sdfsdfsdfsdf"
+    function gotToLogin() {
+      localStorage.removeItem("token");
+      navigator.push("/auth/signin");
+      setIsLoading(false);
+      setAlertMsg("");
     }
-    console.log(sendData);
+
+    setIsLoading(true);
+    const res = await auth(
+      "forgot-password/process",
+      {
+        newPassword: values.password,
+        token: localStorage.getItem("token"),
+      },
+      selectedLang
+    );
+    if (res.code) {
+      setAlertStatus("error");
+      setIsLoading(false);
+    } else {
+      setAlertStatus("success");
+      setTimeout(gotToLogin, 2000);
+    }
+    setAlertMsg(res.message);
   };
 
   return (
@@ -199,10 +228,14 @@ const SetNewPassword = () => {
           <button
             className="box px-6 py-3 text-base text-white bg-primaryBlue rounded-md w-full"
             onClick={setNewPassword}
+            disabled={isLoading}
           >
-            {language.continue}
+            {isLoading ? `${language.continue} ...` : language.continue}
           </button>
         </div>
+        {alertMsg && (
+          <AlertMessage status={alertStatus} msg={alertMsg}></AlertMessage>
+        )}
       </div>
     </main>
   );
