@@ -4,7 +4,7 @@
  * updated_at: 2023.05.09
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 
 import SearchBox from "@/components/materials/SearchBox";
@@ -40,13 +40,14 @@ const SalesAdmin = () => {
   const [predefinedUsers, setPredefinedUsers] = useState([]);
   const [salesUsers, setSalesUsers] = useState([]);
 
-  const getSalesUsersData = async () => {
+  const getSalesUsersData = useCallback(async () => {
     const salesUsersData = await getSalesUsers(selectedLang);
     if (salesUsersData.code) {
+      // handle error
     } else {
       setSalesUsers(salesUsersData.data);
     }
-  };
+  }, [selectedLang]);
   const getPredefinedUsersData = async () => {
     const predefinedUsersData = await getPredefinedUsers(selectedLang);
     if (predefinedUsersData.code) {
@@ -143,7 +144,12 @@ const SalesAdmin = () => {
   useEffect(() => {
     async function process() {
       await getSalesUsersData();
-      await getPredefinedUsersData();
+
+      const predefinedUsersData = await getPredefinedUsers(selectedLang);
+      if (predefinedUsersData.code) {
+      } else {
+        setPredefinedUsers(predefinedUsersData.users);
+      }
 
       if (!localStorage.getItem("accessToken")) {
         const jwt_payload = jwtDecode(localStorage.getItem("accessToken"));
@@ -153,7 +159,7 @@ const SalesAdmin = () => {
       }
     }
     process();
-  });
+  }, [getSalesUsersData, selectedLang, navigator]);
 
   return (
     <main className="mx-10 mobile:mx-4">
