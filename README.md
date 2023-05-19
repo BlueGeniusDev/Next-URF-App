@@ -2,11 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, set configurations
-Open [src/resource/config.jsx]
-Change the APP_URL and API_URL
+#First, set configurations
 
-Second, run the development server:
+##Open [src/resource/config.jsx]
+
+##Change the APP_URL and API_URL
+
+#Second, run the development server:
 
 ```bash
 npm run dev
