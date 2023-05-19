@@ -124,7 +124,6 @@ const SalesAdmin = () => {
       } else {
       }
     } else {
-      console.log(selected);
     }
   };
   const editUser = (id) => {
@@ -137,7 +136,6 @@ const SalesAdmin = () => {
     await getSalesUsersData();
   };
   const resetPass = async (id) => {
-    console.log(id);
     // const res = await delSalesUser(id, selectedLang);
     // await getSalesUsersData();
   };
