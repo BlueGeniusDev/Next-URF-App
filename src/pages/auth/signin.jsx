@@ -137,7 +137,7 @@ const SignIn = () => {
             />
           </label>
           {validAlerts.email === "" ? (
-            <></>
+            <h6 className="text-errorRed p-3"></h6>
           ) : (
             <h6 className="text-errorRed">{validAlerts.email}</h6>
           )}
@@ -191,7 +191,7 @@ const SignIn = () => {
             />
           </label>
           {validAlerts.password === "" ? (
-            <></>
+            <h6 className="text-errorRed p-3"></h6>
           ) : (
             <h6 className="text-errorRed">{validAlerts.password}</h6>
           )}
