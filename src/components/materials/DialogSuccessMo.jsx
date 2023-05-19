@@ -16,7 +16,7 @@ const SuccessDialogMo = (props) => {
         <Image
           className="mb-10 mt-16"
           src="/CheckCircle.svg"
-          alt="Logo"
+          alt="CheckCircle"
           width={58.33}
           height={58.33}
         />

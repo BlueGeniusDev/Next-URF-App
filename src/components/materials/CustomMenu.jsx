@@ -51,7 +51,7 @@ const CustomMenu = (props) => {
               }}
             >
               <Image
-                alt=""
+                alt="trash"
                 src="/trash.svg"
                 width={14}
                 height={18}
@@ -70,7 +70,7 @@ const CustomMenu = (props) => {
               }}
             >
               <Image
-                alt=""
+                alt="resetPass"
                 src="/resetPass.png"
                 width={20}
                 height={25}

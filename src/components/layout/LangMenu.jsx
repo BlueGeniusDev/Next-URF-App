@@ -43,11 +43,10 @@ const LangMenu = () => {
         {language.lang}
         <Image
           src="/images/dropdown_black.svg"
-          alt=""
+          alt="dropdown_black"
           className="pt-2.5"
           width={12}
           height={12}
-          priority
         />
       </button>
 

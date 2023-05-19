@@ -145,7 +145,7 @@ const NewUserDialog = (props) => {
             props.action === "add" ? props.role : props.selectedUser.salesRole
           }
         />
-        <div className="grid gap-4 grid-cols-2 mb-[10px]">
+        <div className="grid gap-4 grid-cols-2 mb-[10px] mt-[16px]">
           <button
             className="box font-normal text-lg px-[5px] py-[14px] text-white bg-primaryBlue rounded-md"
             onClick={props.createNewUser}

@@ -85,18 +85,22 @@ const SalesAdmin = () => {
   const fnNewUser = async () => {
     if (action === "add") {
       if (predefinedUserId === 0) {
+        setAlertStatus("error");
         setAlertMsg(language.selectNameError);
         return;
       }
       if (email === "") {
+        setAlertStatus("error");
         setAlertMsg(`${language.required} ${language.email}`);
         return;
       }
       if (!validateEmail(email)) {
+        setAlertStatus("error");
         setAlertMsg(language.invalidEmail);
         return;
       }
       if (role === "") {
+        setAlertStatus("error");
         setAlertMsg(`${language.required} ${language.role}`);
         return;
       }
@@ -166,14 +170,19 @@ const SalesAdmin = () => {
           <span>{language.createNewUser}</span>
           <Image
             src="/plus.svg"
-            alt="Logo"
+            alt="plus"
             className="ml-2 mt-[6px] float-right"
             width={16}
             height={16}
           />
         </button>
         <SearchBox className="md:clear-both mb-6" />
-        <Table data={salesUsers} delUser={delUser} editUser={editUser} resetPass={resetPass} />
+        <Table
+          data={salesUsers}
+          delUser={delUser}
+          editUser={editUser}
+          resetPass={resetPass}
+        />
       </div>
       <NewUserDialog
         openDialog={btnNewUserClick}

@@ -43,11 +43,10 @@ const LoginMenu = () => {
         {language.login}
         <Image
           src="/images/dropdown_white.svg"
-          alt=""
+          alt="dropdown_white"
           className="pt-2.5 w-auto h-auto"
           width={12}
           height={12}
-          priority
         />
       </button>
 
@@ -66,7 +65,7 @@ const LoginMenu = () => {
           >
             <Image
               src="/images/contractor.svg"
-              alt="Vercel Logo"
+              alt="contractor"
               className="dark:invert h-auto"
               width={21}
               height={21}
@@ -85,7 +84,7 @@ const LoginMenu = () => {
           >
             <Image
               src="/images/sales.svg"
-              alt="Vercel Logo"
+              alt="sales"
               className="dark:invert h-auto"
               width={21}
               height={21}
@@ -104,7 +103,7 @@ const LoginMenu = () => {
           >
             <Image
               src="/images/admin.svg"
-              alt="Vercel Logo"
+              alt="admin"
               className="dark:invert h-auto"
               width={21}
               height={21}
