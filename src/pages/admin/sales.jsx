@@ -35,7 +35,7 @@ const SalesAdmin = () => {
   const [selected, setSelected] = useState({});
   const [predefinedUserId, setPredefinedUserId] = useState(0);
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("Sales Representative");
+  const [role, setRole] = useState("");
   const [action, setAction] = useState("add");
   const [predefinedUsers, setPredefinedUsers] = useState([]);
   const [salesUsers, setSalesUsers] = useState([]);
@@ -48,13 +48,14 @@ const SalesAdmin = () => {
       setSalesUsers(salesUsersData.data);
     }
   }, [selectedLang]);
-  const getPredefinedUsersData = async () => {
+
+  const getPredefinedUsersData = useCallback(async () => {
     const predefinedUsersData = await getPredefinedUsers(selectedLang);
     if (predefinedUsersData.code) {
     } else {
       setPredefinedUsers(predefinedUsersData.users);
     }
-  };
+  }, [selectedLang]);
 
   const btnNewUserClick = () => {
     setOpenNewUser(true);
@@ -102,7 +103,7 @@ const SalesAdmin = () => {
       }
       if (role === "") {
         setAlertStatus("error");
-        setAlertMsg(`${language.required} ${language.role}`);
+        setAlertMsg(`${language.select} ${language.role}`);
         return;
       }
 
@@ -122,6 +123,8 @@ const SalesAdmin = () => {
         setOpenNewUser(false);
         setSuccessUser(true);
         setAlertMsg("");
+        await getSalesUsersData();
+        await getPredefinedUsersData();
       } else {
       }
     } else {
@@ -137,19 +140,13 @@ const SalesAdmin = () => {
     await getSalesUsersData();
   };
   const resetPass = async (id) => {
-    // const res = await delSalesUser(id, selectedLang);
-    // await getSalesUsersData();
+    console.log(id);
   };
 
   useEffect(() => {
     async function process() {
       await getSalesUsersData();
-
-      const predefinedUsersData = await getPredefinedUsers(selectedLang);
-      if (predefinedUsersData.code) {
-      } else {
-        setPredefinedUsers(predefinedUsersData.users);
-      }
+      await getPredefinedUsersData();
 
       if (!localStorage.getItem("accessToken")) {
         const jwt_payload = jwtDecode(localStorage.getItem("accessToken"));
@@ -159,7 +156,7 @@ const SalesAdmin = () => {
       }
     }
     process();
-  }, [getSalesUsersData, selectedLang, navigator]);
+  }, [getSalesUsersData, getPredefinedUsersData, selectedLang, navigator]);
 
   return (
     <main className="mx-10 mobile:mx-4">

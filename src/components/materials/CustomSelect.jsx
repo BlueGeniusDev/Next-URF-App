@@ -21,10 +21,12 @@ const MySelect = styled(Select)(({ theme }) => ({
 }));
 
 const CustomSelect = (props) => {
+  let changeFuc = props.flag === "role" ? props.getRole : props.getName;
+
   return (
     <>
       <MySelect
-        onChange={props.getName}
+        onChange={changeFuc}
         defaultValue={props.defaultValue}
         fullWidth={props.fullWidth}
         error={props.error}

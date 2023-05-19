@@ -61,6 +61,7 @@ const langObj = {
     goBackToDashboard: "Go back to dashboard",
     selectName: "Select from our database",
     selectNameError: "Select the name",
+    select: "Select",
     noSalesUsers: "No sales users",
   },
   sp: {
@@ -119,6 +120,7 @@ const langObj = {
     goBackToDashboard: "Volver al inicio",
     selectName: "Seleccione de nuestra base de datos",
     selectNameError: "Seleccione el nombre",
+    select: "Seleccione",
     noSalesUsers: "Sin usuarios de ventas",
   },
 };

@@ -11,13 +11,14 @@ import { CustomTextField } from "./CustomTextField";
 import MailBox from "./MailBox";
 import AlertMessage from "./AlertMessage";
 import { useMainContext } from "@/context";
+import { Select, Option } from "@material-tailwind/react";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& div.MuiPaper-root": {
     boxShadow: "none",
     width: "555px",
     borderRadius: "16px",
-    margin: "0px !important"
+    margin: "0px !important",
   },
   "& .MuiDialogTitle-root": {
     height: "59px",
@@ -81,16 +82,7 @@ const NewUserDialog = (props) => {
         >
           {props.action === "add" ? language.createNewUser : language.editUser}
         </h2>
-        <p
-          className="text-sm mb-['7px'] mt-6"
-          style={{
-            color: error.hasOwnProperty("key")
-              ? error.key === "mail"
-                ? "#DA1212"
-                : "#0553A4"
-              : "#0553A4",
-          }}
-        >
+        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">
           {language.name}
         </p>
         {props.action === "add" ? (
@@ -100,6 +92,7 @@ const NewUserDialog = (props) => {
             getName={props.getName}
             placeholde={language.selectName}
             defaultValue="0"
+            flag="name"
             fullWidth
           />
         ) : (
@@ -109,16 +102,7 @@ const NewUserDialog = (props) => {
             disabled
           />
         )}
-        <p
-          className="text-sm mb-['7px'] mt-6"
-          style={{
-            color: error.hasOwnProperty("key")
-              ? error.key === "mail"
-                ? "#DA1212"
-                : "#0553A4"
-              : "#0553A4",
-          }}
-        >
+        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">
           {language.email}
         </p>
         <MailBox
@@ -136,14 +120,20 @@ const NewUserDialog = (props) => {
         <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">
           {language.role}
         </p>
-        <CustomTextField
-          fullWidth
-          variant="outlined"
-          className="mb-6"
-          onChange={props.getRole}
+        <CustomSelect
+          Label={language.name}
+          data={[
+            { id: "Contractors", name: "Contractors" },
+            { id: "Sales", name: "Sales" },
+            { id: "Admin", name: "Admin" },
+          ]}
+          getRole={props.getRole}
+          flag="role"
+          placeholde={language.select}
           defaultValue={
-            props.action === "add" ? props.role : props.selectedUser.salesRole
+            props.action === "add" ? "0" : props.selectedUser.salesRole
           }
+          fullWidth
         />
         <div className="grid gap-4 grid-cols-2 mb-[10px] mt-[16px]">
           <button
