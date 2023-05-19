@@ -84,8 +84,9 @@ const SearchBox = (props) => {
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder={language.searchByName}
-          inputProps={{ "aria-label": "Search by name" }}
+          inputProps={{ "aria-label": language.searchByName }}
           defaultValue={props.defaultValue}
+          onChange={props.getSearch}
         />
       </Paper>
     </ThemeProvider>

@@ -66,9 +66,9 @@ export const MainContextProvider = ({ children }) => {
 
     // function to logout user
     logout: async () => {
-      setAccessToken("");
+      setAccessToken(null);
       localStorage.removeItem("accessToken");
-      setRefreshToken("");
+      setRefreshToken(null);
       localStorage.removeItem("refreshToken");
     },
 

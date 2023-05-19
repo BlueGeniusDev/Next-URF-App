@@ -39,9 +39,10 @@ const SalesAdmin = () => {
   const [action, setAction] = useState("add");
   const [predefinedUsers, setPredefinedUsers] = useState([]);
   const [salesUsers, setSalesUsers] = useState([]);
+  const [search, setSearch] = useState("");
 
-  const getSalesUsersData = useCallback(async () => {
-    const salesUsersData = await getSalesUsers(selectedLang);
+  const getSalesUsersData = useCallback(async (search) => {
+    const salesUsersData = await getSalesUsers(search, selectedLang);
     if (salesUsersData.code) {
       // handle error
     } else {
@@ -77,6 +78,10 @@ const SalesAdmin = () => {
   };
   const getRole = (e) => {
     setRole(e.target.value);
+  };
+  const getSearch = async (e) => {
+    setSearch(e.target.value);
+    await getSalesUsersData(e.target.value);
   };
 
   const validateEmail = (email) => {
@@ -123,7 +128,7 @@ const SalesAdmin = () => {
         setOpenNewUser(false);
         setSuccessUser(true);
         setAlertMsg("");
-        await getSalesUsersData();
+        await getSalesUsersData(search);
         await getPredefinedUsersData();
       } else {
       }
@@ -137,7 +142,7 @@ const SalesAdmin = () => {
   };
   const delUser = async (id) => {
     const res = await delSalesUser(id, selectedLang);
-    await getSalesUsersData();
+    await getSalesUsersData(search);
   };
   const resetPass = async (id) => {
     console.log(id);
@@ -145,7 +150,7 @@ const SalesAdmin = () => {
 
   useEffect(() => {
     async function process() {
-      await getSalesUsersData();
+      await getSalesUsersData(search);
       await getPredefinedUsersData();
 
       if (!localStorage.getItem("accessToken")) {
@@ -156,7 +161,7 @@ const SalesAdmin = () => {
       }
     }
     process();
-  }, [getSalesUsersData, getPredefinedUsersData, selectedLang, navigator]);
+  }, [getSalesUsersData, getPredefinedUsersData, selectedLang, navigator, search]);
 
   return (
     <main className="mx-10 mobile:mx-4">
@@ -177,7 +182,7 @@ const SalesAdmin = () => {
             height={16}
           />
         </button>
-        <SearchBox className="md:clear-both mb-6" />
+        <SearchBox className="md:clear-both mb-6" getSearch={getSearch} />
         <Table
           data={salesUsers}
           delUser={delUser}

@@ -19,8 +19,8 @@ const AvatarMenu = () => {
   };
 
   const handleLogOut = () => {
-    navigator.push("/");
     logout();
+    navigator.push("/");
   };
 
   return (

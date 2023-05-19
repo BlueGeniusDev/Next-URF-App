@@ -33,15 +33,14 @@ export const getPredefinedUsers = async (lang) => {
 
     return await res.json();
     // }
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
-export const getSalesUsers = async (lang) => {
+export const getSalesUsers = async (search, lang) => {
   try {
     const configData = await config(lang);
-
-    const res = await fetch(`${API_URL}sales/user`, {
+    const params = { search: search };
+    const res = await fetch(`${API_URL}sales/user?${new URLSearchParams(params)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -51,8 +50,7 @@ export const getSalesUsers = async (lang) => {
     });
 
     return await res.json();
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const createSalesUser = async (values, lang) => {
@@ -68,8 +66,7 @@ export const createSalesUser = async (values, lang) => {
       body: JSON.stringify(values),
     });
     return await res.json();
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const delSalesUser = async (id, lang) => {
