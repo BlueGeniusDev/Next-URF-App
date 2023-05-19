@@ -15,10 +15,10 @@ const mailBoxTheme = createTheme({
         root: {
           // Some CSS
           boxShadow: "none",
-          backgroundColor: "#F0F1F4",
+          backgroundColor: "#e6ebee",
           borderRadius: "8px",
           width: "100%!important",
-          padding: "4px!important",
+          padding: "4px !important",
         },
       },
     },
@@ -34,17 +34,18 @@ const mailBoxTheme = createTheme({
         // Name of the slot
         input: {
           // Some CSS
-          color: "#6C7E93",
+          color: "#30324f",
           boxShadow: "none!important",
           border: "none",
           backgroundColor: "transparent!important",
+          padding: "0px !important"
         },
       },
     },
   },
 });
 
-export default function MailBox(props) {
+const MailBox = (props) => {
   const { language } = useMainContext();
 
   return (
@@ -71,8 +72,11 @@ export default function MailBox(props) {
           placeholder={language.email}
           inputProps={{ "aria-label": "Email" }}
           defaultValue={props.defaultValue}
+          onChange={props.getEmail}
         />
       </Paper>
     </ThemeProvider>
   );
-}
+};
+
+export default MailBox;

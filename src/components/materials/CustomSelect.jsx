@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const MySelect = styled(Select)(({ theme }) => ({
@@ -8,8 +8,8 @@ const MySelect = styled(Select)(({ theme }) => ({
   },
   "& .MuiInputBase-input": {
     fontSize: "16px",
-    backgroundColor: "#F0F1F4!important",
-    color: "#6C7E93",    
+    backgroundColor: "#e6ebee!important",
+    color: "#6C7E93",
   },
   "& .MuiInputBase-root.Mui-focused": {
     border: "2px solid black!important",
@@ -17,23 +17,17 @@ const MySelect = styled(Select)(({ theme }) => ({
   "& .MuiSelect-select": {
     backgroundColor: theme.palette.primary.backgroundColor,
     border: "none",
-    // "&:focus": {
-    //   borderRadius: "8px",
-    //   border: "2px solid " + theme.palette.primary.main,
-    // },
   },
 }));
 
-export default function CustomSelect(props) {
+const CustomSelect = (props) => {
   return (
     <>
-      <p className="text-sm text-[#0553A4] mb-['7px']">{props.Label}</p>
-      {/* <FormControl> */}
       <MySelect
+        onChange={props.getName}
+        defaultValue={props.defaultValue}
         fullWidth={props.fullWidth}
         error={props.error}
-        onChange={props.nameChange}
-        defaultValue={props.defaultValue}
         inputProps={{ "aria-label": "Without label" }}
       >
         <MenuItem disabled value="0">
@@ -45,7 +39,8 @@ export default function CustomSelect(props) {
           </MenuItem>
         ))}
       </MySelect>
-      {/* </FormControl> */}
     </>
   );
-}
+};
+
+export default CustomSelect;

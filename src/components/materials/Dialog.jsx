@@ -4,7 +4,6 @@ import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomSelect from "./CustomSelect";
@@ -18,6 +17,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     boxShadow: "none",
     width: "555px",
     borderRadius: "16px",
+    margin: "0px !important"
   },
   "& .MuiDialogTitle-root": {
     height: "59px",
@@ -27,7 +27,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-function BootstrapDialogTitle(props) {
+const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
 
   return (
@@ -49,14 +49,14 @@ function BootstrapDialogTitle(props) {
       ) : null}
     </DialogTitle>
   );
-}
+};
 
 BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
 
-export default function NewUserDialog(props) {
+const NewUserDialog = (props) => {
   const { language } = useMainContext();
   const [error, setError] = React.useState({});
 
@@ -65,13 +65,12 @@ export default function NewUserDialog(props) {
       onClose={props.closeDialog}
       aria-labelledby="customized-dialog-title"
       open={props.open}
-      className="mobile:hidden"
     >
       <BootstrapDialogTitle
         id="customized-dialog-title"
         onClose={props.closeDialog}
       ></BootstrapDialogTitle>
-      <DialogContent sx={{ px: "91px!important" }}>
+      <DialogContent className="mobile:px-8 px-20 pb-10 m-0">
         <h2
           style={{
             fontSize: "32px",
@@ -82,13 +81,34 @@ export default function NewUserDialog(props) {
         >
           {props.action === "add" ? language.createNewUser : language.editUser}
         </h2>
-        <CustomSelect
-          Label={language.name}
-          data={props.data}
-          placeholde={language.selectName}
-          defaultValue={props.action === "add" ? "0" : props.selectedUser.id}
-          fullWidth
-        />
+        <p
+          className="text-sm mb-['7px'] mt-6"
+          style={{
+            color: error.hasOwnProperty("key")
+              ? error.key === "mail"
+                ? "#DA1212"
+                : "#0553A4"
+              : "#0553A4",
+          }}
+        >
+          {language.name}
+        </p>
+        {props.action === "add" ? (
+          <CustomSelect
+            Label={language.name}
+            data={props.data}
+            getName={props.getName}
+            placeholde={language.selectName}
+            defaultValue="0"
+            fullWidth
+          />
+        ) : (
+          <input
+            className="w-full text-base text-neutral600 px-4 py-3 bg-[#e6ebee]"
+            defaultValue={props.selectedUser.name}
+            disabled
+          />
+        )}
         <p
           className="text-sm mb-['7px'] mt-6"
           style={{
@@ -110,14 +130,20 @@ export default function NewUserDialog(props) {
                 : false
               : false
           }
+          getEmail={props.getEmail}
           defaultValue={props.action === "add" ? "" : props.selectedUser.email}
         />
-        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.role}</p>
+        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">
+          {language.role}
+        </p>
         <CustomTextField
           fullWidth
           variant="outlined"
           className="mb-6"
-          defaultValue={props.action === "add" ? "" : props.selectedUser.role}
+          onChange={props.getRole}
+          defaultValue={
+            props.action === "add" ? props.role : props.selectedUser.salesRole
+          }
         />
         <div className="grid gap-4 grid-cols-2 mb-[10px]">
           <button
@@ -134,13 +160,16 @@ export default function NewUserDialog(props) {
             {language.cancel}
           </button>
         </div>
-        {Object.keys(error).length !== 0 ? (
-          <AlertMessage status="error" msg={error.msg}></AlertMessage>
-        ) : (
-          ""
+
+        {props.alertMsg && (
+          <AlertMessage
+            status={props.alertStatus}
+            msg={props.alertMsg}
+          ></AlertMessage>
         )}
       </DialogContent>
-      <DialogActions />
     </BootstrapDialog>
   );
-}
+};
+
+export default NewUserDialog;

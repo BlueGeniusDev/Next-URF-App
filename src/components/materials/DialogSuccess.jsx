@@ -1,13 +1,12 @@
 import * as React from "react";
+import { useRef } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { CustomTextField } from "./CustomTextField";
 import Image from "next/image";
 import { useMainContext } from "@/context";
 
@@ -25,7 +24,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-function BootstrapDialogTitle(props) {
+const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
 
   return (
@@ -47,15 +46,20 @@ function BootstrapDialogTitle(props) {
       ) : null}
     </DialogTitle>
   );
-}
+};
 
 BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
 
-export default function SuccessDialog(props) {
+const SuccessDialog = (props) => {
   const { language } = useMainContext();
+  const passwordInputRef = useRef(null);
+
+  const copyPassword = (e) => {
+    const password = props.datas.password;
+  };
 
   return (
     <BootstrapDialog
@@ -89,23 +93,39 @@ export default function SuccessDialog(props) {
           {language.createdSuccess1}
         </h2>
         <p>{language.createdSuccess2}</p>
-        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.name}</p>
-        <CustomTextField fullWidth variant="outlined" value={props.data.name} />
-        <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.password}</p>
-        <CustomTextField
-          fullWidth
-          variant="outlined"
-          className="mb-6"
-          value={props.data.password}
+        <p className="text-sm text-[#0553A4] mt-8">{language.name}</p>
+        <input
+          className="w-full text-base text-neutral600 px-4 py-3 bg-[#e6ebee]"
+          defaultValue={props.datas.name}
+          disabled
         />
+        <p className="text-sm text-[#0553A4] mt-6">{language.password}</p>
+        <label className="relative block">
+          <span className="sr-only"></span>
+          <input
+            className="w-full text-base text-neutral600 px-4 py-3 bg-[#e6ebee]"
+            defaultValue={props.datas.password}
+            ref={passwordInputRef}
+            disabled
+          />
+          <Image
+            className="absolute inset-y-0 right-0 items-center p-2.5 cursor-pointer"
+            src={"/duplicate.svg"}
+            alt="duplicate"
+            width={40}
+            height={40}
+            onClick={copyPassword}
+          ></Image>
+        </label>
         <button
-          className="box font-normal text-lg px-[18px] py-[14px] text-white bg-primaryBlue rounded-md w-full"
+          className="box font-normal text-lg my-10 px-[18px] py-[14px] text-white bg-primaryBlue rounded-md w-full"
           onClick={props.closeDialog}
         >
           {language.goBackToDashboard}
         </button>
       </DialogContent>
-      <DialogActions />
     </BootstrapDialog>
   );
-}
+};
+
+export default SuccessDialog;

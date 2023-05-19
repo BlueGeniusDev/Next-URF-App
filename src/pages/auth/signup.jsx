@@ -7,6 +7,7 @@
 // third-party libraries
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 // import components
 import {
@@ -25,6 +26,7 @@ import { useMainContext } from "@/context";
 import { auth } from "../api/auth";
 
 const SignUp = () => {
+  const navigator = useRouter();
   // get global states
   const { language, selectedLang, isAuthed } = useMainContext();
 
@@ -141,10 +143,17 @@ const SignUp = () => {
       return;
     }
 
+    function gotToLogin() {
+      navigator.push("/auth/signin");
+      setIsLoading(false);
+      setAlertMsg("");
+    }
+
     setIsLoading(true);
     const res = await auth("sign-up", values, selectedLang);
     if (!res.code) {
       setAlertStatus("success");
+      setTimeout(gotToLogin, 2000);
     }
     setAlertMsg(res.message);
     setIsLoading(false);

@@ -21,6 +21,21 @@ export const auth = async (uri, values, lang) => {
     });
     return await res.json();
   } catch (error) {
-    console.log(error);
+  }
+};
+
+export const refreToken = async (data, lang) => {
+  try {
+    const res = await fetch(`${API_URL}auth/refresh-token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": lang,
+      },
+      body: JSON.stringify(data),
+    });
+
+    return await res.json();
+  } catch (error) {
   }
 };

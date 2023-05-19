@@ -6,10 +6,10 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
     border: "none",
   },
   "& .MuiInputBase-root": {
-    backgroundColor: "#F0F1F4",
+    backgroundColor: "#e6ebee",
     padding: "10px",
     borderRadius: "8px",
-    color: "#6C7E93",
+    color: "#30324f",
   },
   "& input.MuiInputBase-input": {
     border: "none",

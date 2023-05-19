@@ -26,11 +26,11 @@ const searchBoxTheme = createTheme({
       styleOverrides: {
         root: {
           color: "#B6BEC9",
-          padding: "12px!important"
+          padding: "12px!important",
         },
       },
     },
-    MuiSvgIcon:{
+    MuiSvgIcon: {
       styleOverrides: {
         // Name of the slot
         input: {
@@ -53,15 +53,15 @@ const searchBoxTheme = createTheme({
           boxShadow: "none!important",
           border: "none",
           backgroundColor: "transparent!important",
-          fontSize: "16px"
+          fontSize: "16px",
         },
       },
     },
   },
 });
 
-export default function SearchBox(props) {
-  const {language} = useMainContext();
+const SearchBox = (props) => {
+  const { language } = useMainContext();
 
   return (
     <ThemeProvider theme={searchBoxTheme}>
@@ -90,4 +90,6 @@ export default function SearchBox(props) {
       </Paper>
     </ThemeProvider>
   );
-}
+};
+
+export default SearchBox;

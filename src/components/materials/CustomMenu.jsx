@@ -8,7 +8,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import IconButton from "@mui/material/IconButton";
 import { useMainContext } from "@/context";
 
-export default function CustomMenu(props) {
+const CustomMenu = (props) => {
   const { language } = useMainContext();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -57,7 +57,9 @@ export default function CustomMenu(props) {
                 height={18}
                 className="inline"
               />{" "}
-              <span className="text-base font-norma ml-2 mt-1">{language.delete}</span>
+              <span className="text-base font-norma ml-2 mt-1">
+                {language.delete}
+              </span>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -69,9 +71,9 @@ export default function CustomMenu(props) {
             >
               <Image
                 alt=""
-                src="/trash.svg"
-                width={14}
-                height={18}
+                src="/resetPass.png"
+                width={20}
+                height={25}
                 className="inline"
               />{" "}
               <span className="text-base font-norma ml-2 mt-1">
@@ -83,4 +85,6 @@ export default function CustomMenu(props) {
       </Popover>
     </div>
   );
-}
+};
+
+export default CustomMenu;

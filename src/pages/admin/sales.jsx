@@ -9,53 +9,149 @@ import { useRouter } from "next/router";
 
 import SearchBox from "@/components/materials/SearchBox";
 import Image from "next/image";
-import userlist from "@/resource/userlist";
 import Table from "@/components/materials/Table";
 import NewUserDialog from "@/components/materials/Dialog";
-import NewUserDialogMo from "@/components/materials/DialogMo";
 import SuccessDialog from "@/components/materials/DialogSuccess";
 import SuccessDialogMo from "@/components/materials/DialogSuccessMo";
 import jwtDecode from "jwt-decode";
 import { useMainContext } from "@/context";
 
+import {
+  getPredefinedUsers,
+  getSalesUsers,
+  createSalesUser,
+  delSalesUser,
+} from "../api/admin";
+
 const SalesAdmin = () => {
-  const { language } = useMainContext();
+  const { language, selectedLang } = useMainContext();
   const navigator = useRouter();
 
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertStatus, setAlertStatus] = useState("");
   const [openNewUser, setOpenNewUser] = useState(false);
   const [openSuccessUser, setSuccessUser] = useState(false);
   const [newUser, setNewUser] = useState({});
   const [selected, setSelected] = useState({});
+  const [predefinedUserId, setPredefinedUserId] = useState(0);
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("Sales Representative");
   const [action, setAction] = useState("add");
+  const [predefinedUsers, setPredefinedUsers] = useState([]);
+  const [salesUsers, setSalesUsers] = useState([]);
+
+  const getSalesUsersData = async () => {
+    const salesUsersData = await getSalesUsers(selectedLang);
+    if (salesUsersData.code) {
+    } else {
+      setSalesUsers(salesUsersData.data);
+    }
+  };
+  const getPredefinedUsersData = async () => {
+    const predefinedUsersData = await getPredefinedUsers(selectedLang);
+    if (predefinedUsersData.code) {
+    } else {
+      setPredefinedUsers(predefinedUsersData.users);
+    }
+  };
+
   const btnNewUserClick = () => {
     setOpenNewUser(true);
     setAction("add");
   };
   const closeDialogNewUser = () => {
     setOpenNewUser(false);
-  };
-  const fnNewUser = () => {
-    setOpenNewUser(false);
-    setNewUser({ name: "123", password: "qwe" }); //=========================
-    setSuccessUser(true);
+    setAlertMsg("");
   };
   const closeSuccessDialog = () => {
     setSuccessUser(false);
+    setNewUser({});
+  };
+  const getName = (e) => {
+    setPredefinedUserId(e.target.value);
+  };
+  const getEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const getRole = (e) => {
+    setRole(e.target.value);
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return regex.test(email);
+  };
+
+  const fnNewUser = async () => {
+    if (action === "add") {
+      if (predefinedUserId === 0) {
+        setAlertMsg(language.selectNameError);
+        return;
+      }
+      if (email === "") {
+        setAlertMsg(`${language.required} ${language.email}`);
+        return;
+      }
+      if (!validateEmail(email)) {
+        setAlertMsg(language.invalidEmail);
+        return;
+      }
+      if (role === "") {
+        setAlertMsg(`${language.required} ${language.role}`);
+        return;
+      }
+
+      // here create api
+      const data = {
+        email: email,
+        predefinedUserId: predefinedUserId,
+        role: role,
+      };
+
+      const res = await createSalesUser(data, selectedLang);
+      if (!res.code) {
+        const item = await predefinedUsers.find(
+          (obj) => obj.id === predefinedUserId
+        );
+        setNewUser({ name: item.name, password: res.password });
+        setOpenNewUser(false);
+        setSuccessUser(true);
+        setAlertMsg("");
+      } else {
+      }
+    } else {
+      console.log(selected);
+    }
   };
   const editUser = (id) => {
     setAction("edit");
     setOpenNewUser(true);
-    setSelected(userlist.find((item, index) => item.id === id));
+    setSelected(salesUsers.find((item) => item.id === id));
+  };
+  const delUser = async (id) => {
+    const res = await delSalesUser(id, selectedLang);
+    await getSalesUsersData();
+  };
+  const resetPass = async (id) => {
+    console.log(id);
+    // const res = await delSalesUser(id, selectedLang);
+    // await getSalesUsersData();
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("accessToken")) {
-      const jwt_payload = jwtDecode(localStorage.getItem("accessToken"));
-      if (jwt_payload.organizationRole !== "admin-sales") {
-        navigator.push("/");
+    async function process() {
+      await getSalesUsersData();
+      await getPredefinedUsersData();
+
+      if (!localStorage.getItem("accessToken")) {
+        const jwt_payload = jwtDecode(localStorage.getItem("accessToken"));
+        if (jwt_payload.organizationRole !== "admin-sales") {
+          navigator.push("/");
+        }
       }
     }
-  }, [navigator]);
+    process();
+  });
 
   return (
     <main className="mx-10 mobile:mx-4">
@@ -77,38 +173,33 @@ const SalesAdmin = () => {
           />
         </button>
         <SearchBox className="md:clear-both mb-6" />
-        <Table data={userlist} editUser={editUser} />
+        <Table data={salesUsers} delUser={delUser} editUser={editUser} resetPass={resetPass} />
       </div>
       <NewUserDialog
         openDialog={btnNewUserClick}
         closeDialog={closeDialogNewUser}
+        getName={getName}
+        alertMsg={alertMsg}
+        alertStatus={alertStatus}
+        getEmail={getEmail}
+        getRole={getRole}
         createNewUser={fnNewUser}
         action={action}
         open={openNewUser}
-        data={userlist}
+        data={predefinedUsers}
         selectedUser={selected}
-      />
-      <NewUserDialogMo
-        className={openNewUser ? "hidden mobile:block" : "hidden"}
-        closeDialog={closeDialogNewUser}
-        createNewUser={fnNewUser}
-        action={action}
-        open={openNewUser}
-        data={userlist}
-        selectedUser={selected}
+        role={role}
       />
       <SuccessDialog
         closeDialog={closeSuccessDialog}
-        data={newUser}
+        datas={newUser}
         open={openSuccessUser}
-        name={newUser.name}
       />
       <SuccessDialogMo
-        className={openSuccessUser ? "hidden mobile:block" : "hidden"}
+        className={openSuccessUser ? "hidden mobile:block p-6" : "hidden"}
         closeDialog={closeSuccessDialog}
-        data={newUser}
+        datas={newUser}
         open={openSuccessUser}
-        name={newUser.name}
       />
     </main>
   );

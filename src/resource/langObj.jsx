@@ -45,7 +45,7 @@ const langObj = {
     invalidPhone: "Must follow the style: (123)456-7890.",
     notMatchPassword: "Your passwords doesn't match.",
     passValid2: "Must more than one special character.",
-    required: "Required.",
+    required: "Required",
     notFindEmail: "We couldn't find an account with that email.",
     myProject: "My Projects",
     createNewUser: "Create New User",
@@ -60,6 +60,8 @@ const langObj = {
     createdSuccess2: "An email will be sent to the user with this information to login",
     goBackToDashboard: "Go back to dashboard",
     selectName: "Select from our database",
+    selectNameError: "Select the name",
+    noSalesUsers: "No sales users",
   },
   sp: {
     lang: "Idioma",
@@ -101,7 +103,7 @@ const langObj = {
     invalidPhone: "Debe seguir el estilo: (123)456-7890.",
     notMatchPassword: "Tus contraseñas no coinciden.",
     passValid2: "Debe más de un carácter especial.",
-    required: "Requerida.",
+    required: "Requerida",
     notFindEmail: "No pudimos encontrar una cuenta con ese correo electrónico.",
     myProject: "Mis proyectos",
     createNewUser: "Crear nuevo usuario",
@@ -116,6 +118,8 @@ const langObj = {
     createdSuccess2: "Se enviará un correo electrónico al usuario con esta información para iniciar sesión",
     goBackToDashboard: "Volver al inicio",
     selectName: "Seleccione de nuestra base de datos",
+    selectNameError: "Seleccione el nombre",
+    noSalesUsers: "Sin usuarios de ventas",
   },
 };
 

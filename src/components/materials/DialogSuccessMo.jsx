@@ -3,8 +3,12 @@ import { CustomTextField } from "./CustomTextField";
 import Image from "next/image";
 import { useMainContext } from "@/context";
 
-export default function SuccessDialogMo(props) {
+const SuccessDialogMo = (props) => {
   const { language } = useMainContext();
+
+  const copyPassword = (e) => {
+    const password = props.datas.password;
+  };
 
   return (
     <div className={props.className}>
@@ -28,21 +32,37 @@ export default function SuccessDialogMo(props) {
         {language.createdSuccess1}
       </h2>
       <p>{language.createdSuccess2}</p>
-      <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.name}</p>
-      <CustomTextField fullWidth variant="outlined" value={props.data.name} />
-      <p className="text-sm text-[#0553A4] mb-['7px'] mt-6">{language.password}</p>
-      <CustomTextField
-        fullWidth
-        variant="outlined"
-        className="mb-6"
-        value={props.data.password}
+      <p className="text-sm text-[#0553A4] mt-8">{language.name}</p>
+      <input
+        className="w-full text-base text-neutral600 px-4 py-3 bg-[#e6ebee]"
+        defaultValue={props.datas.name}
+        disabled
       />
+      <p className="text-sm text-[#0553A4] mt-6">{language.password}</p>
+      <label className="relative block">
+        <span className="sr-only"></span>
+        <Image
+          className="absolute inset-y-0 right-0 items-center p-2.5 cursor-pointer"
+          src={"/duplicate.svg"}
+          alt="duplicate"
+          width={40}
+          height={40}
+          onClick={copyPassword}
+        ></Image>
+        <input
+          className="w-full text-base text-neutral600 px-4 py-3 bg-[#e6ebee]"
+          defaultValue={props.datas.password}
+          disabled
+        />
+      </label>
       <button
-        className="box font-normal text-lg px-[18px] py-[14px] text-white bg-primaryBlue rounded-md w-full"
+        className="box font-normal text-lg my-10 px-[18px] py-[14px] text-white bg-primaryBlue rounded-md w-full"
         onClick={props.closeDialog}
       >
         {language.goBackToDashboard}
       </button>
     </div>
   );
-}
+};
+
+export default SuccessDialogMo;

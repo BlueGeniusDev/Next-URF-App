@@ -10,53 +10,64 @@ import IconButton from "@mui/material/IconButton";
 import CustomMenu from "./CustomMenu";
 import { useMainContext } from "@/context";
 
-function Table(props) {
+const Table = (props) => {
   const { language } = useMainContext();
+
   const fnDelete = (i) => {
-    console.log(i);
+    props.delUser(i);
   };
   const fnReset = (i) => {
-    console.log(i);
+    props.resetPass(i);
   };
 
   return (
     <table className="table-auto w-full">
-      <thead>
+      <thead className="hidden md:contents">
         <tr>
-          <th className="text-left text-sm text-[#6C7E93]">
-            <p className="hidden md:inline">{language.name}</p>
+          <th className="text-left text-sm text-neutral500">{language.name}</th>
+          <th className="text-left text-sm text-neutral500">
+            {language.email}
           </th>
-          <th className="hidden md:inline text-sm text-[#6C7E93]">{language.email}</th>
+          <th className="text-left text-sm text-neutral500">{language.role}</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        {props.data.map((item, index) => (
-          <tr
-            className="border-bottomColor border-b text-neutral600 text-lg m-0"
-            key={index}
-          >
-            <td className="pb-2 pt-6">
-              <p className="rounded-full bg-lighterBlue w-11 h-11 inline-block text-lg text-primaryBlue text-center align-middle mr-4 pt-2.5">
-                {item.short}
-              </p>
-              {item.name}
-            </td>
-            <td className="hidden md:inline-block mt-7">{item.email}</td>
-            <td className="mt-8 text-right">
-              <IconButton
-                aria-label="edit"
-                onClick={(e) => props.editUser(item.id)}
-              >
-                <EditIcon />
-              </IconButton>
-              <CustomMenu i={item.id} fnDelete={fnDelete} fnReset={fnReset} />
-            </td>
+        {props.data.length === 0 ? (
+          <tr className="border-bottomColor border-b text-neutral600 text-lg m-0 text-center">
+            <td colSpan="3">{language.noSalesUsers}</td>
           </tr>
-        ))}
+        ) : (
+          props.data.map((item, index) => (
+            <tr
+              className="border-bottomColor border-b text-neutral600 text-lg"
+              key={index}
+            >
+              <td className="py-2">
+                <p className="rounded-full bg-[#c2dbfd] w-11 h-11 inline-block text-lg text-primaryBlue text-center align-middle mr-4 pt-2.5">
+                  AB
+                </p>
+                {item.name}
+              </td>
+              <td className="middle:hidden mobile:hidden py-2">{item.email}</td>
+              <td className="middle:hidden mobile:hidden py-2">
+                {item.salesRole}
+              </td>
+              <td className="text-right py-2">
+                <IconButton
+                  aria-label="edit"
+                  onClick={(e) => props.editUser(item.id)}
+                >
+                  <EditIcon />
+                </IconButton>
+                <CustomMenu i={item.id} fnDelete={fnDelete} fnReset={fnReset} />
+              </td>
+            </tr>
+          ))
+        )}
       </tbody>
     </table>
   );
-}
+};
 
 export default Table;
