@@ -20,6 +20,17 @@ const Table = (props) => {
     props.resetPass(i);
   };
 
+  const getShort = (name) => {
+    const myArray = name.split(" ");
+    var short = "";
+    myArray.map((item) => {
+      short = short + item[0];
+    });
+    if (short.length === 1) short = short + name[1];
+
+    return short.toUpperCase();
+  };
+
   return (
     <table className="table-auto w-full">
       <thead className="hidden md:contents">
@@ -45,7 +56,7 @@ const Table = (props) => {
             >
               <td className="py-2">
                 <p className="rounded-full bg-[#c2dbfd] w-11 h-11 inline-block text-lg text-primaryBlue text-center align-middle mr-4 pt-2.5">
-                  AB
+                  {getShort(item.name)}
                 </p>
                 {item.name}
               </td>
